@@ -8,7 +8,7 @@ export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async profile(userId: string): Promise<User> {
-    const user = await this.userRepository.getUserById(userId);
+    const user = await this.userRepository.getUserWithCommentsAndLikes(userId);
 
     if (!user) throw new NotFoundException(USER_NOT_FOUND);
 
