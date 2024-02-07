@@ -24,7 +24,7 @@ export class UserService {
   }
 
   async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
-    const { userId, nickname, email } = updateUserDto;
+    const { userId, nickname, email, preferredRegion } = updateUserDto;
 
     const user = await this.userRepository.getUserById(userId);
 
@@ -39,6 +39,10 @@ export class UserService {
 
     if (nickname) {
       user.nickname = nickname;
+    }
+
+    if (preferredRegion) {
+      user.preferredRegion = preferredRegion;
     }
 
     return await this.userRepository.save(user);
