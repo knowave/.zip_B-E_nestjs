@@ -1,7 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { User } from './entities/user.entity';
-import { USER_NOT_FOUND } from './error-code/user.error';
+import {
+  EXIST_EMAIL_BAD_REQUEST,
+  USER_NOT_FOUND,
+} from './error-code/user.error';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -13,5 +21,26 @@ export class UserService {
     if (!user) throw new NotFoundException(USER_NOT_FOUND);
 
     return user;
+  }
+
+  async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
+    const { userId, nickname, email } = updateUserDto;
+
+    const user = await this.userRepository.getUserById(userId);
+
+    if (!user) throw new NotFoundException(USER_NOT_FOUND);
+
+    if (email) {
+      const existEmail = await this.userRepository.getUserByEmail(email);
+      if (existEmail) throw new BadRequestException(EXIST_EMAIL_BAD_REQUEST);
+
+      user.email = email;
+    }
+
+    if (nickname) {
+      user.nickname = nickname;
+    }
+
+    return await this.userRepository.save(user);
   }
 }
