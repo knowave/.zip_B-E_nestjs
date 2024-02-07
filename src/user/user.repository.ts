@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+import { Apartment } from 'src/apartment/entities/apartment.entity';
 
 @Injectable()
 export class UserRepository {
@@ -24,9 +25,14 @@ export class UserRepository {
     return await this.repository
       .createQueryBuilder('user')
       .innerJoinAndSelect('user.likes', 'likes')
-      .leftJoinAndSelect('likes.privateApt', 'privateApt')
-      .leftJoinAndSelect('likes.publicApt', 'publicApt')
+      .leftJoinAndSelect('likes.privateApt', 'likePrivateApt')
+      .leftJoinAndSelect('likes.publicApt', 'likePublicApt')
       .leftJoinAndSelect('user.likes', 'likes')
+      .innerJoinAndSelect(
+        Apartment,
+        'apartment',
+        'publicApt.region = user.preferredRegion',
+      )
       .addSelect('COUNT(likes.id)', 'likeCount')
       .where('user.userId = :userId', { userId })
       .getOne();
