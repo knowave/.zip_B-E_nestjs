@@ -31,4 +31,12 @@ export class UserRepository {
       .where('user.userId = :userId', { userId })
       .getOne();
   }
+
+  async save(user: User): Promise<User> {
+    return await this.repository.save(user);
+  }
+
+  async bulkSave(users: User[]): Promise<User[]> {
+    return await this.repository.save(users);
+  }
 }
