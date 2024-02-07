@@ -13,6 +13,13 @@ export class UserRepository {
       .getOne();
   }
 
+  async getUserByEmail(email: string): Promise<User> {
+    return await this.repository
+      .createQueryBuilder('user')
+      .where('user.email = :email', { email })
+      .getOne();
+  }
+
   async getUserWithCommentsAndLikes(userId: string): Promise<User> {
     return await this.repository
       .createQueryBuilder('user')
