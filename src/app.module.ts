@@ -7,10 +7,16 @@ import { MysqlModule } from './mysql/mysql.module';
 import { ApartmentModule } from './apartment/apartment.module';
 import { ApartmentService } from './apartment/apartment.service';
 import { ApartmentController } from './apartment/apartment.controller';
+import { APP_GUARD } from '@nestjs/core';
+import { JWTAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @Module({
   imports: [UserModule, AuthModule, MysqlModule, ApartmentModule],
   controllers: [AppController, ApartmentController],
-  providers: [AppService, ApartmentService],
+  providers: [
+    AppService,
+    ApartmentService,
+    { provide: APP_GUARD, useClass: JWTAuthGuard },
+  ],
 })
 export class AppModule {}
