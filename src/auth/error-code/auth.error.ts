@@ -16,11 +16,16 @@ export const AUTH_JWT_EXPIRED: CommonError = {
 };
 
 export const AUTH_PERMISSION_DENIED: CommonError = {
-  code: 'PERMISSION_DENIED',
+  code: 'AUTH_PERMISSION_DENIED',
   message: '잘못된 경로입니다.',
 };
 
 export const USER_NOT_EXIST_REFRESH_TOKEN: CommonError = {
   code: 'USER_NOT_EXIST_REFRESH_TOKEN',
   message: 'RefreshToken이 존재하지 않습니다.',
+};
+
+export const JWT_NOT_REISSUED: CommonError = {
+  code: 'JWT_NOT_REISSUED',
+  message: '재발급을 실패했습니다.',
 };
