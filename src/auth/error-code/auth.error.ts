@@ -19,3 +19,8 @@ export const AUTH_PERMISSION_DENIED: CommonError = {
   code: 'PERMISSION_DENIED',
   message: '잘못된 경로입니다.',
 };
+
+export const USER_NOT_EXIST_REFRESH_TOKEN: CommonError = {
+  code: 'USER_NOT_EXIST_REFRESH_TOKEN',
+  message: 'RefreshToken이 존재하지 않습니다.',
+};
