@@ -9,9 +9,10 @@ import { ApartmentService } from './apartment/apartment.service';
 import { ApartmentController } from './apartment/apartment.controller';
 import { APP_GUARD } from '@nestjs/core';
 import { JWTAuthGuard } from './auth/guards/jwt-auth.guard';
+import { LikeModule } from './like/like.module';
 
 @Module({
-  imports: [UserModule, AuthModule, MysqlModule, ApartmentModule],
+  imports: [UserModule, AuthModule, MysqlModule, ApartmentModule, LikeModule],
   controllers: [AppController, ApartmentController],
   providers: [
     AppService,
