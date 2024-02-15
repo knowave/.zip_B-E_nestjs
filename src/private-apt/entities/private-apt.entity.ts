@@ -1,7 +1,7 @@
 import { Entity, Column, OneToOne, OneToMany, PrimaryColumn } from 'typeorm';
-// import { PrivateAptDetail1 } from './PrivateAptDetail1';
-// import { PrivateImg } from './PrivateImg';
-// import { PrivateAptDetail2 } from './PrivateAptDetail2';
+import { PrivateAptDetail1 } from 'src/private-apt-detail/entities/private-apt-detail-1.entity';
+import { PrivateAptDetail2 } from 'src/private-apt-detail/entities/private-apt-detail-2.entity';
+import { PrivateImg } from './private-img.entity';
 import { Like } from 'src/like/entities/like';
 // import { Comment } from './Comment';
 
@@ -40,14 +40,14 @@ export class PrivateApt {
   @Column({ nullable: true, length: 15 })
   sido: string;
 
-  //   @OneToOne(() => PrivateAptDetail1, (detail1) => detail1.privateApt)
-  //   detail1: PrivateAptDetail1;
+  @OneToOne(() => PrivateAptDetail1, (detail1) => detail1.privateApt)
+  privateAptDetail1s: PrivateAptDetail1;
 
-  //   @OneToOne(() => PrivateImg, (img) => img.privateApt)
-  //   img: PrivateImg;
+  @OneToMany(() => PrivateImg, (img) => img.privateApt)
+  privateImgs: PrivateImg;
 
-  //   @OneToOne(() => PrivateAptDetail2, (detail2) => detail2.privateApt)
-  //   detail2: PrivateAptDetail2;
+  @OneToOne(() => PrivateAptDetail2, (detail2) => detail2.privateApt)
+  privateAptDetail2: PrivateAptDetail2;
 
   @OneToMany(() => Like, (like) => like.privateApt)
   likes: Like[];
