@@ -11,9 +11,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { JWTAuthGuard } from './auth/guards/jwt-auth.guard';
 import { LikeModule } from './like/like.module';
 import { PrivateAptModule } from './private-apt/private-apt.module';
+import { PrivateAptDetailModule } from './private-apt-detail/private-apt-detail.module';
 
 @Module({
-  imports: [UserModule, AuthModule, MysqlModule, ApartmentModule, LikeModule, PrivateAptModule],
+  imports: [UserModule, AuthModule, MysqlModule, ApartmentModule, LikeModule, PrivateAptModule, PrivateAptDetailModule],
   controllers: [AppController, ApartmentController],
   providers: [
     AppService,
