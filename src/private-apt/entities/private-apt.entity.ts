@@ -1,9 +1,9 @@
 import { Entity, Column, OneToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import { PrivateAptDetail1 } from 'src/private-apt-detail/entities/private-apt-detail-1.entity';
 import { PrivateAptDetail2 } from 'src/private-apt-detail/entities/private-apt-detail-2.entity';
-import { PrivateImg } from './private-img.entity';
+import { PrivateImg } from '../../pub-notice/entities/private-img.entity';
 import { Like } from 'src/like/entities/like';
-// import { Comment } from './Comment';
+import { Comment } from 'src/comment/entities/comment';
 
 @Entity()
 export class PrivateApt {
@@ -52,6 +52,6 @@ export class PrivateApt {
   @OneToMany(() => Like, (like) => like.privateApt)
   likes: Like[];
 
-  //   @OneToMany(() => Comment, (comment) => comment.privateApt)
-  //   comments: Comment[];
+  @OneToMany(() => Comment, (comment) => comment.privateApt)
+  comments: Comment[];
 }
