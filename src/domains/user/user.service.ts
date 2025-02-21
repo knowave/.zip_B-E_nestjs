@@ -5,6 +5,7 @@ import { NOT_FOUND_ERROR } from 'src/common/exceptions/error-code/not-found.erro
 import { CreateUserBody } from './dto/request/create-user.req';
 import { BAD_REQUEST_ERROR } from 'src/common/exceptions/error-code/bad-request.error';
 import * as bcrypt from 'bcrypt';
+import { UpdateUserBody } from './dto/request/update-user.req';
 
 @Injectable()
 export class UserService {
@@ -55,5 +56,36 @@ export class UserService {
 
   async updateTokenById(id: string, token: string) {
     await this.userRepository.update(id, { token });
+  }
+
+  async updateUser(
+    { nickname, region, imageUrl }: UpdateUserBody,
+    userId: string,
+  ) {
+    const user = await this.getUserById(userId);
+
+    if (nickname) {
+      if (nickname === user.nickname)
+        throw new BaseException({
+          ...BAD_REQUEST_ERROR.ALREADY_EXIST_NICKNAME,
+          message: nickname,
+        });
+
+      user.nickname = nickname;
+    }
+
+    if (region) {
+      if (region === user.region)
+        throw new BaseException({
+          ...BAD_REQUEST_ERROR.ALREADY_EXIST_REGION,
+          message: region,
+        });
+
+      user.region = region;
+    }
+
+    if (imageUrl) user.imageUrl = imageUrl;
+
+    await this.userRepository.save(user);
   }
 }

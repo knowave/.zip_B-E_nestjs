@@ -1,9 +1,21 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
+import { UpdateUserBody } from './dto/request/update-user.req';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUserType } from 'src/common/types/current-user.type';
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Patch()
+  @ApiOperation({ summary: '사용자 정보 수정' })
+  async updateUser(
+    @Body() updateUserBody: UpdateUserBody,
+    @CurrentUser() { id }: CurrentUserType,
+  ) {
+    await this.userService.updateUser(updateUserBody, id);
+  }
 }
