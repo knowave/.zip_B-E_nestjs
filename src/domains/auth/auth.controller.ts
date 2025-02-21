@@ -6,6 +6,8 @@ import { CreateUserBody } from '../user/dto/request/create-user.req';
 import { Public } from 'src/common/decorators/public.decorator';
 import { SigninBody } from './dto/request/signin.req';
 import { SigninResponse } from './dto/response/signin.res';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUserType } from 'src/common/types/current-user.type';
 
 @Controller('auth')
 export class AuthController {
@@ -27,5 +29,11 @@ export class AuthController {
   @ApiResponse({ type: SigninResponse })
   async signin(@Body() signInBody: SigninBody) {
     return this.authService.signin(signInBody);
+  }
+
+  @Post('/signout')
+  @ApiOperation({ summary: '로그아웃' })
+  async signout(@CurrentUser() { id }: CurrentUserType) {
+    await this.authService.signout(id);
   }
 }

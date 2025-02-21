@@ -80,4 +80,8 @@ export class AuthService {
       expiresIn: JWT_REFRESH_TOKEN_EXPIRATION_TIME,
     });
   }
+
+  async signout(userId: string) {
+    await this.userService.updateTokenById(userId, null);
+  }
 }
