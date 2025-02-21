@@ -63,7 +63,11 @@ export class AuthService {
     );
   }
 
-  generateAccessToken(user: User) {
+  async signout(userId: string) {
+    await this.userService.updateTokenById(userId, null);
+  }
+
+  private generateAccessToken(user: User) {
     const payload = { id: user.id, email: user.email };
 
     return this.jwtService.sign(payload, {
@@ -72,16 +76,12 @@ export class AuthService {
     });
   }
 
-  generateRefreshToken(user: User) {
+  private generateRefreshToken(user: User) {
     const payload = { id: user.id, email: user.email };
 
     return this.jwtService.sign(payload, {
       secret: JWT_REFRESH_TOKEN_SECRET,
       expiresIn: JWT_REFRESH_TOKEN_EXPIRATION_TIME,
     });
-  }
-
-  async signout(userId: string) {
-    await this.userService.updateTokenById(userId, null);
   }
 }
