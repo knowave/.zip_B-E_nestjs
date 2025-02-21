@@ -11,7 +11,12 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar', comment: '사용자 닉네임' })
   nickname: string;
 
-  @Column({ type: 'varchar', nullable: true, comment: '사용자 비밀번호' })
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    select: false,
+    comment: '사용자 비밀번호',
+  })
   password: string;
 
   @Column({

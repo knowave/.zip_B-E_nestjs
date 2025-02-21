@@ -3,13 +3,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { CommentModule } from './comment/comment.module';
-import { ListModule } from './list/list.module';
 import { LikeModule } from './like/like.module';
 import { S3Module } from './s3/s3.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JWTGuard } from './auth/guards/jwt.guard';
 
 @Module({
-  imports: [DatabaseModule, CommentModule, ListModule, LikeModule, S3Module],
+  imports: [DatabaseModule, CommentModule, LikeModule, S3Module],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_GUARD, useClass: JWTGuard }],
 })
 export class AppModule {}
