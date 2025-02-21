@@ -38,6 +38,9 @@ export class User extends BaseEntity {
   })
   imageUrl: string;
 
+  @Column({ type: 'boolean', default: false, comment: '사용자 탈퇴 여부' })
+  isDeleted: boolean;
+
   @OneToMany(() => Comment, (comment) => comment.user)
   commentList: Comment[];
 
