@@ -8,9 +8,19 @@ import { S3Module } from './s3/s3.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JWTGuard } from './auth/guards/jwt.guard';
 import { UploadModule } from './upload/upload.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [DatabaseModule, CommentModule, LikeModule, S3Module, UploadModule],
+  imports: [
+    DatabaseModule,
+    AuthModule,
+    UserModule,
+    CommentModule,
+    LikeModule,
+    S3Module,
+    UploadModule,
+  ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JWTGuard }],
 })
