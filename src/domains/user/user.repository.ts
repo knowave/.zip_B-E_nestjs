@@ -9,10 +9,16 @@ export class UserRepository extends Repository<User> {
   }
 
   findOneByEmail(email: string) {
-    return this.findOne({ where: { email } });
+    return this.createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.email = :email', { email })
+      .getOne();
   }
 
   findOneById(id: string) {
-    return this.findOne({ where: { id }, select: { password: true } });
+    return this.createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.id = :id', { id })
+      .getOne();
   }
 }

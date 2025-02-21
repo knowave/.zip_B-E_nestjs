@@ -52,4 +52,8 @@ export class UserService {
 
     await this.userRepository.save(user);
   }
+
+  async updateTokenById(id: string, token: string) {
+    await this.userRepository.update(id, { token });
+  }
 }
