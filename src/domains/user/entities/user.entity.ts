@@ -1,7 +1,7 @@
 import { BaseEntity } from 'src/common/base.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { Comment } from 'src/modules/comment/entities/comment.entity';
-import { Like } from 'src/modules/like/entities/like.entity';
+import { Comment } from 'src/domains/comment/entities/comment.entity';
+import { Like } from 'src/domains/like/entities/like.entity';
 
 @Entity()
 export class User extends BaseEntity {
