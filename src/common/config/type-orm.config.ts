@@ -6,7 +6,7 @@ import {
   DATABASE_PORT,
   DATABASE_USERNAME,
   NODE_ENV,
-} from './env';
+} from '../env';
 
 export const typeOrmConfig: DataSourceOptions = {
   type: 'mysql',
