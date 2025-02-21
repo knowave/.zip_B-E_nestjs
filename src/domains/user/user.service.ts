@@ -88,4 +88,13 @@ export class UserService {
 
     await this.userRepository.save(user);
   }
+
+  async softRemoveUser(userId: string) {
+    const user = await this.getUserById(userId);
+    user.isDeleted = true;
+    await this.userRepository.save(user);
+    await this.userRepository.softDelete(userId);
+  }
+
+  async getWithdrawUser(userId) {}
 }

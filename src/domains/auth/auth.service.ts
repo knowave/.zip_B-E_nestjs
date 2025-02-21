@@ -84,4 +84,10 @@ export class AuthService {
       expiresIn: JWT_REFRESH_TOKEN_EXPIRATION_TIME,
     });
   }
+
+  async withdrawUser(userId: string) {
+    return await this.userService.softRemoveUser(userId);
+  }
+
+  async completeWithdrawUser(userId: string) {}
 }
