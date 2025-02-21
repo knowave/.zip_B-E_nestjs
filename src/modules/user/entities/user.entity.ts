@@ -5,6 +5,21 @@ import { Like } from 'src/domains/like/entities/like.entity';
 
 @Entity()
 export class User extends BaseEntity {
+  @Column({
+    type: 'varchar',
+    unique: true,
+    nullable: true,
+    comment: '소셜 로그인 사용자 ID (ex: naver_12345, kakao_67890)',
+  })
+  socialId: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+    comment: '소셜 로그인 타입 (NAVER, KAKAO, GOOGLE...)',
+  })
+  socialLoginType: string;
+
   @Column({ type: 'varchar', unique: true, comment: '사용자 email' })
   email: string;
 
