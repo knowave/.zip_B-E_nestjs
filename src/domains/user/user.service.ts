@@ -108,4 +108,12 @@ export class UserService {
   async deleteUser(userId: string) {
     await this.userRepository.delete(userId);
   }
+
+  async profileUser(userId: string) {
+    const user = await this.userRepository.findOneProfileUserById(userId);
+
+    if (!user) throw new BaseException(NOT_FOUND_ERROR.USER);
+
+    return user;
+  }
 }

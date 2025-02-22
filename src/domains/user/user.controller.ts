@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UpdateUserBody } from './dto/request/update-user.req';
@@ -17,5 +17,11 @@ export class UserController {
     @CurrentUser() { id }: CurrentUserType,
   ) {
     await this.userService.updateUser(updateUserBody, id);
+  }
+
+  @Get('/profile')
+  @ApiOperation({ summary: '사용자 프로필 조회' })
+  async profileUser(@CurrentUser() { id }: CurrentUserType) {
+    return await this.userService.profileUser(id);
   }
 }

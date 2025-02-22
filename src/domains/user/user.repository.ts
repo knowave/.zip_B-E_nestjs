@@ -32,4 +32,8 @@ export class UserRepository extends Repository<User> {
       .withDeleted()
       .getOne();
   }
+
+  findOneProfileUserById(id: string) {
+    return this.findOne({ where: { id } });
+  }
 }
