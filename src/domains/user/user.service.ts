@@ -96,5 +96,16 @@ export class UserService {
     await this.userRepository.softDelete(userId);
   }
 
-  async getWithdrawUser(userId) {}
+  async getWithdrawUser(userId: string) {
+    const user =
+      await this.userRepository.findOneWithdraw30DaysAgoUserById(userId);
+
+    if (!user) throw new BaseException(NOT_FOUND_ERROR.USER);
+
+    return user;
+  }
+
+  async deleteUser(userId: string) {
+    await this.userRepository.delete(userId);
+  }
 }

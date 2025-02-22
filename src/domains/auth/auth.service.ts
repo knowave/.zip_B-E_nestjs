@@ -89,5 +89,9 @@ export class AuthService {
     return await this.userService.softRemoveUser(userId);
   }
 
-  async completeWithdrawUser(userId: string) {}
+  async completeWithdrawUser(userId: string) {
+    const user = await this.userService.getWithdrawUser(userId);
+
+    await this.userService.deleteUser(user.id);
+  }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -35,5 +35,17 @@ export class AuthController {
   @ApiOperation({ summary: '로그아웃' })
   async signout(@CurrentUser() { id }: CurrentUserType) {
     await this.authService.signout(id);
+  }
+
+  @Delete()
+  @ApiOperation({ summary: '회원 탈퇴' })
+  async withdrawUser(@CurrentUser() { id }: CurrentUserType) {
+    return await this.authService.withdrawUser(id);
+  }
+
+  @Delete('/complete-withdraw')
+  @ApiOperation({ summary: '회원 탈퇴 완료' })
+  async completeWithdrawUser(@CurrentUser() { id }: CurrentUserType) {
+    return await this.authService.completeWithdrawUser(id);
   }
 }

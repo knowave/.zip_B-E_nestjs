@@ -21,4 +21,15 @@ export class UserRepository extends Repository<User> {
       .where('user.id = :id', { id })
       .getOne();
   }
+
+  findOneWithdraw30DaysAgoUserById(id: string) {
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    return this.createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .andWhere('user.withdrawAt >= :thirtyDaysAgo', { thirtyDaysAgo })
+      .withDeleted()
+      .getOne();
+  }
 }
