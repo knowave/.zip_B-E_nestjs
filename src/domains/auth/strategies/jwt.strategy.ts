@@ -9,19 +9,19 @@ import { UserService } from 'src/domains/user/user.service';
 
 @Injectable()
 export class JWTStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(private readonly userService: UserService) {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: JWT_ACCESS_TOKEN_SECRET,
-    });
-  }
+    constructor(private readonly userService: UserService) {
+        super({
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            secretOrKey: JWT_ACCESS_TOKEN_SECRET,
+        });
+    }
 
-  async validate(payload: any) {
-    const { id } = payload;
-    const user: User = await this.userService.getUserById(id);
+    async validate(payload: any) {
+        const { id } = payload;
+        const user: User = await this.userService.getUserById(id);
 
-    if (!user) throw new BaseException(UNAUTHORIZED_ERROR.COMMON);
+        if (!user) throw new BaseException(UNAUTHORIZED_ERROR.COMMON);
 
-    return user;
-  }
+        return user;
+    }
 }

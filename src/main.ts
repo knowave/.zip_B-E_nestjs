@@ -5,13 +5,13 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { setupSwagger } from './common/config/swagger.config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+    app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
-  if (NODE_ENV !== 'prod') setupSwagger(app);
+    if (NODE_ENV !== 'prod') setupSwagger(app);
 
-  await app.listen(PORT ?? 3000);
+    await app.listen(PORT ?? 3000);
 }
 bootstrap();

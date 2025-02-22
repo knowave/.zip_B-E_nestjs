@@ -8,20 +8,17 @@ import { CurrentUserType } from 'src/common/types/current-user.type';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService) {}
 
-  @Patch()
-  @ApiOperation({ summary: '사용자 정보 수정' })
-  async updateUser(
-    @Body() updateUserBody: UpdateUserBody,
-    @CurrentUser() { id }: CurrentUserType,
-  ) {
-    await this.userService.updateUser(updateUserBody, id);
-  }
+    @Patch()
+    @ApiOperation({ summary: '사용자 정보 수정' })
+    async updateUser(@Body() updateUserBody: UpdateUserBody, @CurrentUser() { id }: CurrentUserType) {
+        await this.userService.updateUser(updateUserBody, id);
+    }
 
-  @Get('/profile')
-  @ApiOperation({ summary: '사용자 프로필 조회' })
-  async profileUser(@CurrentUser() { id }: CurrentUserType) {
-    return await this.userService.profileUser(id);
-  }
+    @Get('/profile')
+    @ApiOperation({ summary: '사용자 프로필 조회' })
+    async profileUser(@CurrentUser() { id }: CurrentUserType) {
+        return await this.userService.profileUser(id);
+    }
 }

@@ -5,9 +5,9 @@ import { Entity, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity()
 export class Comment extends BaseEntity {
-  @ManyToOne(() => User, (user) => user.commentList)
-  user: User;
+    @ManyToOne(() => User, (user) => user.commentList)
+    user: User;
 
-  @OneToMany(() => Like, (like) => like.comment)
-  likeList: Like[];
+    @OneToMany(() => Like, (like) => like.comment)
+    likeList: Like[];
 }
