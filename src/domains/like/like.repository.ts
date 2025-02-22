@@ -8,7 +8,7 @@ export class LikeRepository extends Repository<Like> {
         super(Like, dataSource.createEntityManager());
     }
 
-    async findOneByUserIdAndCommentId(userId: string, commentId: string) {
+    findOneByUserIdAndCommentId(userId: string, commentId: string) {
         return this.findOne({
             where: { user: { id: userId }, comment: { id: commentId } },
         });
