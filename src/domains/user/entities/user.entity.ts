@@ -72,12 +72,6 @@ export class User extends BaseEntity {
     @Column({ type: 'boolean', default: false, comment: '사용자 탈퇴 여부' })
     isDeleted: boolean;
 
-    @Expose()
-    @IsNumber()
-    @ApiProperty({ readOnly: true, description: '사용자 좋아요 수' })
-    @Column({ type: 'int', default: 0, comment: '사용자 좋아요 수' })
-    likeCount: number;
-
     @OneToMany(() => Comment, (comment) => comment.user)
     commentList: Comment[];
 
