@@ -1,4 +1,4 @@
-import { DataSourceOptions } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import {
   DATABASE_HOST,
   DATABASE_NAME,
@@ -21,3 +21,5 @@ export const typeOrmConfig: DataSourceOptions = {
   migrationsRun: false,
   logging: NODE_ENV === 'local',
 };
+
+export const AppDataSource = new DataSource(typeOrmConfig);

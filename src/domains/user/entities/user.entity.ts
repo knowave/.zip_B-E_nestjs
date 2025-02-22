@@ -4,7 +4,13 @@ import { Comment } from 'src/domains/comment/entities/comment.entity';
 import { Like } from 'src/domains/like/entities/like.entity';
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 
 @Entity()
 export class User extends BaseEntity {
@@ -71,6 +77,12 @@ export class User extends BaseEntity {
   @ApiProperty({ readOnly: true, description: '사용자 탈퇴 여부' })
   @Column({ type: 'boolean', default: false, comment: '사용자 탈퇴 여부' })
   isDeleted: boolean;
+
+  @Expose()
+  @IsNumber()
+  @ApiProperty({ readOnly: true, description: '사용자 좋아요 수' })
+  @Column({ type: 'int', default: 0, comment: '사용자 좋아요 수' })
+  likeCount: number;
 
   @OneToMany(() => Comment, (comment) => comment.user)
   commentList: Comment[];
