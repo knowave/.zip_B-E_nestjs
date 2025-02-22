@@ -6,6 +6,8 @@ import { CreateUserBody } from './dto/request/create-user.req';
 import { BAD_REQUEST_ERROR } from 'src/common/exceptions/error-code/bad-request.error';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserBody } from './dto/request/update-user.req';
+import { plainToInstance } from 'class-transformer';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -114,6 +116,9 @@ export class UserService {
 
     if (!user) throw new BaseException(NOT_FOUND_ERROR.USER);
 
-    return user;
+    return plainToInstance(User, user, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    });
   }
 }
