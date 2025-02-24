@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { PublicApartment } from './entities/public-apartment.entity';
-import { FindManyPaginationType } from './types/find-many-pagination.type';
+import { PublicApartment } from '../entities/public-apartment.entity';
+import { FindManyPaginationType } from '../types/find-many-pagination.type';
 
 @Injectable()
 export class PublicApartmentRepository extends Repository<PublicApartment> {
