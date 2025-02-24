@@ -3,6 +3,7 @@ import { Expose } from 'class-transformer';
 import { IsNumber } from 'class-validator';
 import { BaseEntity } from 'src/common/base.entity';
 import { Like } from 'src/domains/like/entities/like.entity';
+import { PublicApartment } from 'src/domains/private-apartment/entities/public-apartment.entity';
 import { User } from 'src/domains/user/entities/user.entity';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
@@ -19,4 +20,7 @@ export class Comment extends BaseEntity {
 
     @OneToMany(() => Like, (like) => like.comment)
     likeList: Like[];
+
+    @ManyToOne(() => PublicApartment, (apartment) => apartment.comments)
+    publicApartment: PublicApartment;
 }
