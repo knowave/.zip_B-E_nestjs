@@ -10,9 +10,19 @@ import { JWTGuard } from './auth/guards/jwt.guard';
 import { UploadModule } from './upload/upload.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { PublicApartmentModule } from './public-apartment/public-apartment.module';
 
 @Module({
-    imports: [DatabaseModule, AuthModule, UserModule, CommentModule, LikeModule, S3Module, UploadModule],
+    imports: [
+        DatabaseModule,
+        AuthModule,
+        UserModule,
+        CommentModule,
+        LikeModule,
+        S3Module,
+        UploadModule,
+        PublicApartmentModule,
+    ],
     controllers: [AppController],
     providers: [AppService, { provide: APP_GUARD, useClass: JWTGuard }],
 })

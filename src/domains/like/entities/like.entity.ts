@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/common/base.entity';
 import { Comment } from 'src/domains/comment/entities/comment.entity';
-import { PublicApartment } from 'src/domains/private-apartment/entities/public-apartment.entity';
+import { PublicApartment } from 'src/domains/public-apartment/entities/public-apartment.entity';
 import { User } from 'src/domains/user/entities/user.entity';
 import { Entity, ManyToOne } from 'typeorm';
 
