@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { UpdateUserBody } from './dto/request/update-user.req';
 import { plainToInstance } from 'class-transformer';
 import { User } from './entities/user.entity';
+import { ChangePasswordBody } from './dto/request/change-password.req';
 
 @Injectable()
 export class UserService {
@@ -35,7 +36,7 @@ export class UserService {
         if (existUser) throw new BaseException(BAD_REQUEST_ERROR.ALREADY_EXIST_USER);
 
         if (password) {
-            hashedPassword = await bcrypt.hash(password, this.salt);
+            hashedPassword = await this.hashedPassword(password);
         }
 
         const user = this.userRepository.create({
@@ -109,5 +110,17 @@ export class UserService {
             excludeExtraneousValues: true,
             enableImplicitConversion: true,
         });
+    }
+
+    async changePassword({ password }: ChangePasswordBody, userId: string) {
+        const user = await this.getUserById(userId);
+        const hashedPassword = await this.hashedPassword(password);
+
+        user.password = hashedPassword;
+        await this.userRepository.save(user);
+    }
+
+    private async hashedPassword(password: string) {
+        return await bcrypt.hash(password, this.salt);
     }
 }
