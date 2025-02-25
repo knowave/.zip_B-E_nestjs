@@ -1,10 +1,12 @@
-import { Controller, Param, Post } from '@nestjs/common';
+import { Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { LikeService } from './like.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CommentLikeRequest } from './dto/request/comment-like.req';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/common/types/current-user.type';
 import { PublicApartmentLikeParam } from './dto/request/public-apartment-like.req';
+import { GetPublicApartmentOrCommentLikeListByUserQuery } from './dto/request/get-public-apartment-or-comment-like-list-by-user.req';
+import { GetPublicApartmentLikeOrCommentListResponse } from './dto/response/get-public-apartment-or-comment-like-list-by-user.res';
 
 @Controller('like')
 export class LikeController {
@@ -20,5 +22,15 @@ export class LikeController {
     @ApiOperation({ summary: '공영 아파트 좋아요' })
     async publicApartmentLike(@Param() param: PublicApartmentLikeParam, @CurrentUser() { id }: CurrentUserType) {
         return await this.likeService.publicApartmentLike(param, id);
+    }
+
+    @Get('/public-apartment')
+    @ApiOperation({ summary: '공영 아파트 및 댓글 좋아요 목록 조회' })
+    @ApiResponse({ type: GetPublicApartmentLikeOrCommentListResponse })
+    async getPublicApartmentOrCommentLikeListByUser(
+        @Query() query: GetPublicApartmentOrCommentLikeListByUserQuery,
+        @CurrentUser() { id }: CurrentUserType,
+    ) {
+        return await this.likeService.getPublicApartmentOrCommentLikeListByUser(query, id);
     }
 }

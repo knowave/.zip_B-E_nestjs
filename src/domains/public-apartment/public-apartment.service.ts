@@ -32,6 +32,9 @@ export class PublicApartmentService {
             currentPage: page,
             totalPage: Math.ceil(totalCount / take),
             totalCount,
+        }, {
+            excludeExtraneousValues: true,
+            enableImplicitConversion: true,
         });
     }
 

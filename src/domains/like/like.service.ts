@@ -4,6 +4,9 @@ import { CommentLikeRequest } from './dto/request/comment-like.req';
 import { CommentService } from '../comment/comment.service';
 import { PublicApartmentLikeParam } from './dto/request/public-apartment-like.req';
 import { PublicApartmentService } from '../public-apartment/public-apartment.service';
+import { GetPublicApartmentOrCommentLikeListByUserQuery } from './dto/request/get-public-apartment-or-comment-like-list-by-user.req';
+import { plainToInstance } from 'class-transformer';
+import { GetPublicApartmentLikeOrCommentListResponse } from './dto/response/get-public-apartment-or-comment-like-list-by-user.res';
 
 @Injectable()
 export class LikeService {
@@ -54,5 +57,33 @@ export class LikeService {
             await this.publicApartmentService.incrementLikeCount(publicApartment.id);
             return true;
         }
+    }
+
+    async getPublicApartmentOrCommentLikeListByUser(
+        { filter, page, take }: GetPublicApartmentOrCommentLikeListByUserQuery,
+        userId: string,
+    ) {
+        const skip = (page - 1) * take;
+        const [publicApartmentLikeList, totalCount] =
+            await this.likeRepository.findManyPublicApartmentOrCommentLikeByUserPagination({
+                filter,
+                userId,
+                skip,
+                take,
+            });
+
+        return plainToInstance(
+            GetPublicApartmentLikeOrCommentListResponse,
+            <GetPublicApartmentLikeOrCommentListResponse>{
+                publicApartmentLikeList,
+                currentPage: page,
+                totalPage: Math.ceil(totalCount / take),
+                totalCount,
+            },
+            {
+                excludeExtraneousValues: true,
+                enableImplicitConversion: true,
+            },
+        );
     }
 }
