@@ -6,6 +6,8 @@ import { GetPublicApartmentListResponse } from './dto/response/get-public-apartm
 import { UploadImageUrlListBody } from './dto/request/upload-image-url-list.req';
 import { PublicApartmentImage } from './entities/public-apartment-image.entity';
 import { PublicApartmentImageRepository } from './repositories/public-apartment-image.repository';
+import { BaseException } from 'src/common/exceptions/error';
+import { NOT_FOUND_ERROR } from 'src/common/exceptions/error-code/not-found.error';
 
 @Injectable()
 export class PublicApartmentService {
@@ -31,7 +33,7 @@ export class PublicApartmentService {
             totalPage: Math.ceil(totalCount / take),
             totalCount,
         });
-    }   
+    }
 
     async uploadImageUrlList({ imageUrlList }: UploadImageUrlListBody) {
         const createPublicApartmentImageList: PublicApartmentImage[] = imageUrlList.map((imageUrl) => {
@@ -41,5 +43,21 @@ export class PublicApartmentService {
         });
 
         await this.publicApartmentImageRepository.bulkSave(createPublicApartmentImageList);
+    }
+
+    async getPublicApartmentById(id: string) {
+        const publicApartment = await this.publicApartmentRepository.findOneById(id);
+
+        if (!publicApartment) throw new BaseException(NOT_FOUND_ERROR.PUBLIC_APARTMENT);
+
+        return publicApartment;
+    }
+
+    async incrementLikeCount(id: string) {
+        await this.publicApartmentRepository.incrementLikeCount(id);
+    }
+
+    async decrementLikeCount(id: string) {
+        await this.publicApartmentRepository.decrementLikeCount(id);
     }
 }

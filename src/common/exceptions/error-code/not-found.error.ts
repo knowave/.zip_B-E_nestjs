@@ -13,4 +13,9 @@ export const NOT_FOUND_ERROR = {
         message: 'not found comment',
         statusCode: NOT_FOUND_ERROR_STATUS_CODE,
     } as Error,
+    PUBLIC_APARTMENT: {
+        code: 'PUBLIC_APARTMENT_NOT_FOUND',
+        message: 'not found public apartment',
+        statusCode: NOT_FOUND_ERROR_STATUS_CODE,
+    },
 };

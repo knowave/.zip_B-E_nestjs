@@ -13,4 +13,10 @@ export class LikeRepository extends Repository<Like> {
             where: { user: { id: userId }, comment: { id: commentId } },
         });
     }
+
+    findOneByUserIdAndPublicApartmentId(userId: string, publicApartmentId: string) {
+        return this.findOne({
+            where: { user: { id: userId }, publicApartment: { id: publicApartmentId } },
+        });
+    }
 }
