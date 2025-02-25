@@ -7,6 +7,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { JWT_ACCESS_TOKEN_EXPIRATION_TIME, JWT_ACCESS_TOKEN_SECRET } from 'src/common/env';
 import { JWTStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
+import { NaverStrategy } from './strategies/naver.strategy';
+import { KakaoStrategy } from './strategies/kakao.strategy';
 
 @Module({
     imports: [
@@ -17,7 +19,7 @@ import { LocalStrategy } from './strategies/local.strategy';
             signOptions: { expiresIn: JWT_ACCESS_TOKEN_EXPIRATION_TIME },
         }),
     ],
-    providers: [AuthService, JWTStrategy, LocalStrategy],
+    providers: [AuthService, JWTStrategy, LocalStrategy, NaverStrategy, KakaoStrategy],
     controllers: [AuthController],
 })
 export class AuthModule {}

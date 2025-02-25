@@ -123,4 +123,12 @@ export class UserService {
     private async hashedPassword(password: string) {
         return await bcrypt.hash(password, this.salt);
     }
+
+    async getSocialUserByIdAndType(socialId: string, socialLoginType: string) {
+        const user = await this.userRepository.findOneSocialUserBySocialIdAndType(socialId, socialLoginType);
+
+        if (!user) return null;
+
+        return user;
+    }
 }

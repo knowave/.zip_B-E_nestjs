@@ -15,6 +15,7 @@ import {
 } from 'src/common/env';
 import { plainToInstance } from 'class-transformer';
 import { SigninResponse } from './dto/response/signin.res';
+import { SocialLoginType } from 'src/common/enums/social-login-type.enum';
 
 @Injectable()
 export class AuthService {
@@ -90,5 +91,13 @@ export class AuthService {
         const user = await this.userService.getWithdrawUser(userId);
 
         await this.userService.deleteUser(user.id);
+    }
+
+    async validateKakao(kakaoId: string) {
+        return await this.userService.getSocialUserByIdAndType(kakaoId, SocialLoginType.KAKAO);
+    }
+
+    async validateNaver(naverId: string) {
+        return await this.userService.getSocialUserByIdAndType(naverId, SocialLoginType.NAVER);
     }
 }

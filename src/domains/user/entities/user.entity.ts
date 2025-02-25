@@ -33,6 +33,18 @@ export class User extends BaseEntity {
     })
     password?: string;
 
+    @Expose()
+    @IsString()
+    @ApiProperty({ description: '소셜 아이디 고유 식별자' })
+    @Column({ type: 'varchar', unique: true, nullable: true, comment: '소셜 아이디 고유 식별자' })
+    socialId?: string;
+
+    @Expose()
+    @IsString()
+    @ApiProperty({ description: '소셜 로그인 타입', example: 'naver' })
+    @Column({ type: 'varchar', nullable: true, comment: '소셜 로그인 타입' })
+    socialLoginType?: string;
+
     @ApiProperty({ description: '사용자 refresh token' })
     @Column({
         type: 'varchar',

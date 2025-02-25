@@ -19,3 +19,10 @@ export const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME as string;
 export const AWS_REGION = process.env.AWS_REGION as string;
 export const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID as string;
 export const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY as string;
+
+export const KAKAO_CALLBACK_URL = process.env.KAKAO_CALLBACK_URL as string;
+export const KAKAO_CLIENT_ID = process.env.KAKAO_CLIENT_ID as string;
+
+export const NAVER_CALLBACK_URL = process.env.NAVER_CALLBACK_URL as string;
+export const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID as string;
+export const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET as string;
