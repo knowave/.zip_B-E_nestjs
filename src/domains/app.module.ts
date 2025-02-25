@@ -11,6 +11,7 @@ import { UploadModule } from './upload/upload.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PublicApartmentModule } from './public-apartment/public-apartment.module';
+import { PrivateApartmentModule } from './private-apartment/private-apartment.module';
 
 @Module({
     imports: [
@@ -22,6 +23,7 @@ import { PublicApartmentModule } from './public-apartment/public-apartment.modul
         S3Module,
         UploadModule,
         PublicApartmentModule,
+        PrivateApartmentModule,
     ],
     controllers: [AppController],
     providers: [AppService, { provide: APP_GUARD, useClass: JWTGuard }],
