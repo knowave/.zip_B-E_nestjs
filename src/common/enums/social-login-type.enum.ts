@@ -1,4 +1,4 @@
-export enum SocialLoginType {
+export enum SocialLoginTypeEnum {
     KAKAO = 'kakao',
     NAVER = 'naver',
 }

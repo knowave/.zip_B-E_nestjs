@@ -18,4 +18,9 @@ export const BAD_REQUEST_ERROR = {
         message: 'already exist region.',
         statusCode: BAD_REQUEST_ERROR_STATUS_CODE,
     } as Error,
+    INVALID_SOCIAL_LOGIN_TYPE: {
+        code: 'INVALID_SOCIAL_LOGIN_TYPE',
+        message: 'invalid social login type.',
+        statusCode: BAD_REQUEST_ERROR_STATUS_CODE,
+    } as Error,
 };

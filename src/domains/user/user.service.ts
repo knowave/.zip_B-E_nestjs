@@ -9,6 +9,8 @@ import { UpdateUserBody } from './dto/request/update-user.req';
 import { plainToInstance } from 'class-transformer';
 import { User } from './entities/user.entity';
 import { ChangePasswordBody } from './dto/request/change-password.req';
+import { CreateSocialUserRequest } from './dto/request/create-social-user.req';
+import { SocialLoginTypeEnum } from 'src/common/enums/social-login-type.enum';
 
 @Injectable()
 export class UserService {
@@ -130,5 +132,14 @@ export class UserService {
         if (!user) return null;
 
         return user;
+    }
+
+    async createSocialUser({ email, nickname, socialId, socialLoginType }: CreateSocialUserRequest) {
+        if (!Object.values(SocialLoginTypeEnum).includes(socialLoginType as SocialLoginTypeEnum)) {
+            throw new BaseException(BAD_REQUEST_ERROR.INVALID_SOCIAL_LOGIN_TYPE);
+        }
+
+        const createUser = this.userRepository.create({ email, nickname, socialId, socialLoginType });
+        return await this.userRepository.save(createUser);
     }
 }

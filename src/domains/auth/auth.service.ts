@@ -15,7 +15,10 @@ import {
 } from 'src/common/env';
 import { plainToInstance } from 'class-transformer';
 import { SigninResponse } from './dto/response/signin.res';
-import { SocialLoginType } from 'src/common/enums/social-login-type.enum';
+import { SocialLoginTypeEnum } from 'src/common/enums/social-login-type.enum';
+import { SocialSigninRequest } from './dto/request/social-signin.req';
+import { v4 as uuid } from 'uuid';
+import { SocialSigninResponse } from './dto/response/social-signin.res';
 
 @Injectable()
 export class AuthService {
@@ -94,10 +97,44 @@ export class AuthService {
     }
 
     async validateKakao(kakaoId: string) {
-        return await this.userService.getSocialUserByIdAndType(kakaoId, SocialLoginType.KAKAO);
+        return await this.userService.getSocialUserByIdAndType(kakaoId, SocialLoginTypeEnum.KAKAO);
     }
 
     async validateNaver(naverId: string) {
-        return await this.userService.getSocialUserByIdAndType(naverId, SocialLoginType.NAVER);
+        return await this.userService.getSocialUserByIdAndType(naverId, SocialLoginTypeEnum.NAVER);
+    }
+
+    async socialSignin({ socialId, email, type }: SocialSigninRequest, userId?: string) {
+        let user: User;
+
+        if (socialId && email && type && !userId) {
+            const tempSocialUsername = `${type}-${uuid()}`;
+
+            user = await this.userService.createSocialUser({
+                email,
+                nickname: tempSocialUsername,
+                socialId,
+                socialLoginType: type,
+            });
+
+            userId = user.id;
+        }
+
+        const accessToken = this.generateAccessToken(user);
+        const refreshToken = this.generateRefreshToken(user);
+        await this.userService.updateTokenById(userId, refreshToken);
+
+        return plainToInstance(
+            SocialSigninResponse,
+            <SocialSigninResponse>{
+                accessToken,
+                refreshToken,
+                user,
+            },
+            {
+                excludeExtraneousValues: true,
+                enableImplicitConversion: true,
+            },
+        );
     }
 }
