@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CommentRepository } from './comment.repository';
 import { BaseException } from 'src/common/exceptions/error';
 import { NOT_FOUND_ERROR } from 'src/common/exceptions/error-code/not-found.error';
-import { CreatePublicApartmentCommentBody } from './dto/request/create-public-apartment-comment.req';
 import { UserService } from '../user/user.service';
 import { PublicApartmentService } from '../public-apartment/public-apartment.service';
 import { BAD_REQUEST_ERROR } from 'src/common/exceptions/error-code/bad-request.error';
@@ -32,14 +31,14 @@ export class CommentService {
         return comment;
     }
 
-    async createApartmentComment({ body, userId, publicApartmentId, privateApartmentId }: createApartmentCommentType) {
+    async createApartmentComment({ body, userId, apartmentId }: createApartmentCommentType) {
         if (body.content.length > 600) throw new BaseException(BAD_REQUEST_ERROR.INVALID_COMMENT_CONTENT);
 
         let createComment: Comment;
         const user = await this.userService.getUserById(userId);
         switch (body.type) {
             case CreateCommentTypeEnum.PUBLIC_APT:
-                const publicApartment = await this.publicApartmentService.getPublicApartmentById(publicApartmentId);
+                const publicApartment = await this.publicApartmentService.getPublicApartmentById(apartmentId);
 
                 createComment = this.commentRepository.create({ ...body, user, publicApartment });
                 await this.commentRepository.save(createComment);
@@ -47,11 +46,11 @@ export class CommentService {
                 break;
 
             case CreateCommentTypeEnum.PRIVATE_APT:
-                const privateApartment = await this.privateApartmentService.getPrivateApartmentById(privateApartmentId);
+                const privateApartment = await this.privateApartmentService.getPrivateApartmentById(apartmentId);
 
                 createComment = this.commentRepository.create({ ...body, user, privateApartment });
                 await this.commentRepository.save(createComment);
-                await this.privateApartmentService.incrementCommentCount(privateApartmentId);
+                await this.privateApartmentService.incrementCommentCount(apartmentId);
                 break;
         }
     }
@@ -78,4 +77,6 @@ export class CommentService {
             totalCount,
         });
     }
+
+    async 
 }

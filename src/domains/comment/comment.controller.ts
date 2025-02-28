@@ -13,12 +13,12 @@ import { GetManyApartmentCommentQuery } from './dto/request/get-many-apartment-c
 export class CommentController {
     constructor(private readonly service: CommentService) {}
 
-    @Post(['/:publicApartmentId', '/:privateApartmentId'])
+    @Post(['/:apartmentId'])
     @ApiOperation({ summary: '공/민영 아파트 댓글 작성' })
     async writePublicApartmentComment(
         @Body() body: CreatePublicApartmentCommentBody,
         @CurrentUser() { id: userId }: CurrentUserType,
-        @Param() params: { publicApartmentId?: string; privateApartmentId?: string },
+        @Param() apartmentId: string,
     ) {
         return await this.service.createApartmentComment({
             body,
