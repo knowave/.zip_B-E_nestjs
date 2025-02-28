@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Repository, SelectQueryBuilder } from 'typeorm';
 import { Comment } from './entities/comment.entity';
+import { findManyApartmentCommentPaginationType } from './types/find-many-apartment-comment-pagination.type';
+import { ApartmentEnum } from './enums/apartment.type.enum';
 
 @Injectable()
 export class CommentRepository extends Repository<Comment> {
@@ -12,11 +14,31 @@ export class CommentRepository extends Repository<Comment> {
         return this.findOne({ where: { id } });
     }
 
-    async incrementCommentCount(id: string) {
-        await this.increment({ id }, 'commentCount', 1);
-    }
+    findManyApartmentCommentPagination({
+        skip,
+        take,
+        type,
+        publicApartmentId,
+        privateApartmentId,
+    }: findManyApartmentCommentPaginationType) {
+        let qb: SelectQueryBuilder<Comment>;
 
-    async decrementCommentCount(id: string) {
-        await this.decrement({ id }, 'commentCount', 1);
+        if (type === ApartmentEnum.PUBLIC_APT) {
+            qb = this.createQueryBuilder('comment')
+                .leftJoinAndSelect('comment.user', 'user')
+                .leftJoin('comment.publicApartment', 'pa')
+                .addSelect('pa.id ', 'paId')
+                .where('paId = :publicApartmentId', { publicApartmentId });
+        }
+
+        if (type === ApartmentEnum.PRIVATE_APT) {
+            qb = this.createQueryBuilder('comment')
+                .leftJoinAndSelect('comment.user', 'user')
+                .leftJoin('comment.privateApartment', 'pa')
+                .addSelect('pa.id ', 'paId')
+                .where('paId = :privateApartmentId', { privateApartmentId });
+        }
+
+        return qb.skip(skip).take(take).orderBy('comment.createdAt', 'DESC').getManyAndCount();
     }
 }

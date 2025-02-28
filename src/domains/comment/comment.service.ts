@@ -10,6 +10,10 @@ import { PrivateApartmentService } from '../private-apartment/private-apartment.
 import { createApartmentCommentType } from './types/create-apartment-comment.type';
 import { CreateCommentTypeEnum } from './enums/create-comment-type.enum';
 import { Comment } from './entities/comment.entity';
+import { GetManyApartmentCommentQuery } from './dto/request/get-many-apartment-comment.req';
+import { ApartmentEnum } from './enums/apartment.type.enum';
+import { plainToInstance } from 'class-transformer';
+import { GetManyApartmentCommentResponse } from './dto/response/get-many-apartment-comment.res';
 
 @Injectable()
 export class CommentService {
@@ -26,14 +30,6 @@ export class CommentService {
         if (!comment) throw new BaseException(NOT_FOUND_ERROR.COMMENT);
 
         return comment;
-    }
-
-    async incrementCommentCount(id: string) {
-        await this.commentRepository.incrementCommentCount(id);
-    }
-
-    async decrementCommentCount(id: string) {
-        await this.commentRepository.decrementCommentCount(id);
     }
 
     async createApartmentComment({ body, userId, publicApartmentId, privateApartmentId }: createApartmentCommentType) {
@@ -58,5 +54,28 @@ export class CommentService {
                 await this.privateApartmentService.incrementCommentCount(privateApartmentId);
                 break;
         }
+    }
+
+    async getManyApartmentComment({ page, take, ...query }: GetManyApartmentCommentQuery) {
+        if (query.type === ApartmentEnum.PUBLIC_APT && !query.publicApartmentId)
+            throw new BaseException(BAD_REQUEST_ERROR.INVALID_PUBLIC_APARTMENT);
+
+        if (query.type === ApartmentEnum.PRIVATE_APT && !query.privateApartmentId)
+            throw new BaseException(BAD_REQUEST_ERROR.INVALID_PRIVATE_APARTMENT);
+
+        const skip = (page - 1) * take;
+
+        const [commentList, totalCount] = await this.commentRepository.findManyApartmentCommentPagination({
+            skip,
+            take,
+            ...query,
+        });
+
+        return plainToInstance(GetManyApartmentCommentResponse, <GetManyApartmentCommentResponse>{
+            commentList,
+            currentPage: page,
+            totalPage: Math.ceil(totalCount / take),
+            totalCount,
+        });
     }
 }
