@@ -1,9 +1,10 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { PublicApartmentService } from './public-apartment.service';
-import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetPublicApartmentListQuery } from './dto/request/get-public-apartment-list.req';
 import { GetPublicApartmentListResponse } from './dto/response/get-public-apartment-list.res';
 
+@ApiTags('public-apartment')
 @Controller('public-apartment')
 export class PublicApartmentController {
     constructor(private readonly publicApartmentService: PublicApartmentService) {}

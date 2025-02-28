@@ -36,4 +36,20 @@ export class PublicApartmentRepository extends Repository<PublicApartment> {
     decrementLikeCount(id: string) {
         return this.decrement({ id }, 'likeCount', 1);
     }
+
+    incrementCommentCount(id: string) {
+        return this.increment({ id }, 'commentCount', 1);
+    }
+
+    decrementCommentCount(id: string) {
+        return this.decrement({ id }, 'commentCount', 1);
+    }
+
+    incrementViewCount(id: string) {
+        return this.increment({ id }, 'viewCount', 1);
+    }
+
+    decrementViewCount(id: string) {
+        return this.decrement({ id }, 'viewCount', 1);
+    }
 }

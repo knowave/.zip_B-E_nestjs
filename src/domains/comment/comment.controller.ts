@@ -1,4 +1,26 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Param, Post } from '@nestjs/common';
+import { CommentService } from './comment.service';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { CurrentUserType } from 'src/common/types/current-user.type';
+import { CreatePublicApartmentCommentBody } from './dto/request/create-public-apartment-comment.req';
 
+@ApiTags('comment')
 @Controller('comment')
-export class CommentController {}
+export class CommentController {
+    constructor(private readonly service: CommentService) {}
+
+    @Post('/public-apartment')
+    @ApiOperation({ summary: '공영 아파트 댓글 작성' })
+    async writePublicApartmentComment(
+        @Param('publicApartmentId') publicApartmentId: string,
+        @Body() body: CreatePublicApartmentCommentBody,
+        @CurrentUser() { id: userId }: CurrentUserType,
+    ) {
+        return await this.service.createPublicApartmentComment({
+            body,
+            userId,
+            publicApartmentId,
+        });
+    }
+}

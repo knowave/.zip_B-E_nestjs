@@ -27,15 +27,19 @@ export class PublicApartmentService {
             endDate,
         });
 
-        return plainToInstance(GetPublicApartmentListResponse, <GetPublicApartmentListResponse>{
-            publicApartmentList,
-            currentPage: page,
-            totalPage: Math.ceil(totalCount / take),
-            totalCount,
-        }, {
-            excludeExtraneousValues: true,
-            enableImplicitConversion: true,
-        });
+        return plainToInstance(
+            GetPublicApartmentListResponse,
+            <GetPublicApartmentListResponse>{
+                publicApartmentList,
+                currentPage: page,
+                totalPage: Math.ceil(totalCount / take),
+                totalCount,
+            },
+            {
+                excludeExtraneousValues: true,
+                enableImplicitConversion: true,
+            },
+        );
     }
 
     async uploadImageUrlList({ imageUrlList }: UploadImageUrlListBody) {
@@ -62,5 +66,21 @@ export class PublicApartmentService {
 
     async decrementLikeCount(id: string) {
         await this.publicApartmentRepository.decrementLikeCount(id);
+    }
+
+    async incrementCommentCount(id: string) {
+        await this.publicApartmentRepository.incrementCommentCount(id);
+    }
+
+    async decrementCommentCount(id: string) {
+        await this.publicApartmentRepository.decrementCommentCount(id);
+    }
+
+    async incrementViewCount(id: string) {
+        await this.publicApartmentRepository.incrementViewCount(id);
+    }
+
+    async decrementViewCount(id: string) {
+        await this.publicApartmentRepository.decrementViewCount(id);
     }
 }

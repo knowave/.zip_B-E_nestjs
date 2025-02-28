@@ -23,4 +23,9 @@ export const BAD_REQUEST_ERROR = {
         message: 'invalid social login type.',
         statusCode: BAD_REQUEST_ERROR_STATUS_CODE,
     } as Error,
+    INVALID_COMMENT_CONTENT: {
+        code: 'INVALID_COMMENT_CONTENT',
+        message: 'invalid comment content length',
+        statusCode: BAD_REQUEST_ERROR_STATUS_CODE,
+    } as Error,
 };

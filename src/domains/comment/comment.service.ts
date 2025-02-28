@@ -2,10 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { CommentRepository } from './comment.repository';
 import { BaseException } from 'src/common/exceptions/error';
 import { NOT_FOUND_ERROR } from 'src/common/exceptions/error-code/not-found.error';
+import { CreatePublicApartmentCommentBody } from './dto/request/create-public-apartment-comment.req';
+import { UserService } from '../user/user.service';
+import { PublicApartmentService } from '../public-apartment/public-apartment.service';
+import { BAD_REQUEST_ERROR } from 'src/common/exceptions/error-code/bad-request.error';
 
 @Injectable()
 export class CommentService {
-    constructor(private readonly commentRepository: CommentRepository) {}
+    constructor(
+        private readonly commentRepository: CommentRepository,
+        private readonly userService: UserService,
+        private readonly publicApartmentService: PublicApartmentService,
+    ) {}
 
     async getCommentById(id: string) {
         const comment = await this.commentRepository.findOneById(id);
@@ -21,5 +29,24 @@ export class CommentService {
 
     async decrementCommentCount(id: string) {
         await this.commentRepository.decrementCommentCount(id);
+    }
+
+    async createPublicApartmentComment({
+        body: { content, isPrivate },
+        userId,
+        publicApartmentId,
+    }: {
+        body: CreatePublicApartmentCommentBody;
+        userId: string;
+        publicApartmentId: string;
+    }) {
+        const user = await this.userService.getUserById(userId);
+        const publicApartment = await this.publicApartmentService.getPublicApartmentById(publicApartmentId);
+
+        if (content.length > 600) throw new BaseException(BAD_REQUEST_ERROR.INVALID_COMMENT_CONTENT);
+
+        const createComment = this.commentRepository.create({ content, isPrivate, user, publicApartment });
+        await this.commentRepository.save(createComment);
+        await this.publicApartmentService.incrementCommentCount(publicApartment.id);
     }
 }
