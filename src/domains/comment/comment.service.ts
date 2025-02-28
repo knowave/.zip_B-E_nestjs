@@ -7,6 +7,9 @@ import { UserService } from '../user/user.service';
 import { PublicApartmentService } from '../public-apartment/public-apartment.service';
 import { BAD_REQUEST_ERROR } from 'src/common/exceptions/error-code/bad-request.error';
 import { PrivateApartmentService } from '../private-apartment/private-apartment.service';
+import { createApartmentCommentType } from './types/create-apartment-comment.type';
+import { CreateCommentTypeEnum } from './enums/create-comment-type.enum';
+import { Comment } from './entities/comment.entity';
 
 @Injectable()
 export class CommentService {
@@ -33,41 +36,27 @@ export class CommentService {
         await this.commentRepository.decrementCommentCount(id);
     }
 
-    async createPublicApartmentComment({
-        body: { content, isPrivate },
-        userId,
-        publicApartmentId,
-    }: {
-        body: CreatePublicApartmentCommentBody;
-        userId: string;
-        publicApartmentId: string;
-    }) {
+    async createApartmentComment({ body, userId, publicApartmentId, privateApartmentId }: createApartmentCommentType) {
+        if (body.content.length > 600) throw new BaseException(BAD_REQUEST_ERROR.INVALID_COMMENT_CONTENT);
+
+        let createComment: Comment;
         const user = await this.userService.getUserById(userId);
-        const publicApartment = await this.publicApartmentService.getPublicApartmentById(publicApartmentId);
+        switch (body.type) {
+            case CreateCommentTypeEnum.PUBLIC_APT:
+                const publicApartment = await this.publicApartmentService.getPublicApartmentById(publicApartmentId);
 
-        if (content.length > 600) throw new BaseException(BAD_REQUEST_ERROR.INVALID_COMMENT_CONTENT);
+                createComment = this.commentRepository.create({ ...body, user, publicApartment });
+                await this.commentRepository.save(createComment);
+                await this.publicApartmentService.incrementCommentCount(publicApartment.id);
+                break;
 
-        const createComment = this.commentRepository.create({ content, isPrivate, user, publicApartment });
-        await this.commentRepository.save(createComment);
-        await this.publicApartmentService.incrementCommentCount(publicApartment.id);
-    }
+            case CreateCommentTypeEnum.PRIVATE_APT:
+                const privateApartment = await this.privateApartmentService.getPrivateApartmentById(privateApartmentId);
 
-    async createPrivateApartmentComment({
-        body: { content, isPrivate },
-        userId,
-        privateApartmentId,
-    }: {
-        body: CreatePublicApartmentCommentBody;
-        userId: string;
-        privateApartmentId: string;
-    }) {
-        const user = await this.userService.getUserById(userId);
-        const privateApartment = await this.privateApartmentService.getPrivateApartmentById(privateApartmentId);
-
-        if (content.length > 600) throw new BaseException(BAD_REQUEST_ERROR.INVALID_COMMENT_CONTENT);
-
-        const createComment = this.commentRepository.create({ content, isPrivate, user, privateApartment });
-        await this.commentRepository.save(createComment);
-        await this.privateApartmentService.incrementCommentCount(privateApartmentId);
+                createComment = this.commentRepository.create({ ...body, user, privateApartment });
+                await this.commentRepository.save(createComment);
+                await this.privateApartmentService.incrementCommentCount(privateApartmentId);
+                break;
+        }
     }
 }

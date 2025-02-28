@@ -11,30 +11,18 @@ import { CreatePrivateApartmentCommentBody } from './dto/request/create-private-
 export class CommentController {
     constructor(private readonly service: CommentService) {}
 
-    @Post('/public-apartment')
-    @ApiOperation({ summary: '공영 아파트 댓글 작성' })
+    @Post('')
+    @ApiOperation({ summary: '공/민영 아파트 댓글 작성' })
     async writePublicApartmentComment(
-        @Param('publicApartmentId') publicApartmentId: string,
         @Body() body: CreatePublicApartmentCommentBody,
         @CurrentUser() { id: userId }: CurrentUserType,
+        @Param('publicApartmentId') publicApartmentId?: string,
+        @Param('privateApartmentId') privateApartmentId?: string,
     ) {
-        return await this.service.createPublicApartmentComment({
+        return await this.service.createApartmentComment({
             body,
             userId,
             publicApartmentId,
-        });
-    }
-
-    @Post('/private-apartment')
-    @ApiOperation({ summary: '민영 아파트 댓글 작성' })
-    async writePrivateApartmentComment(
-        @Param('privateApartment') privateApartmentId: string,
-        @Body() body: CreatePrivateApartmentCommentBody,
-        @CurrentUser() { id: userId }: CurrentUserType,
-    ) {
-        return await this.service.createPrivateApartmentComment({
-            body,
-            userId,
             privateApartmentId,
         });
     }
