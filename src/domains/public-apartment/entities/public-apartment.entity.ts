@@ -125,11 +125,6 @@ export class PublicApartment extends BaseEntity {
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'integer', nullable: false, comment: '아파트 전체 조회 건수' })
-    totalViewCount: number;
-
-    @Expose()
-    @ApiProperty()
     @Column({ type: 'integer', nullable: false, comment: '아파트 조회 건수' })
     viewCount: number;
 

@@ -159,6 +159,21 @@ export class PrivateApartment extends BaseEntity {
     @Column({ type: 'varchar', nullable: true, comment: '아파트 공급금액(분양최고금액,만원단위)' })
     supplyPrice: string;
 
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'integer', nullable: false, comment: '아파트 조회 건수' })
+    viewCount: number;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'integer', default: 0, comment: '아파트 댓글 수' })
+    commentCount: number;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'integer', default: 0, comment: '아파트 좋아요 수' })
+    likeCount: number;
+
     @OneToMany(() => Like, (like) => like.privateApartment)
     likes: Like[];
 
