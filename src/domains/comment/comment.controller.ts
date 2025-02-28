@@ -18,14 +18,13 @@ export class CommentController {
     async writePublicApartmentComment(
         @Body() body: CreatePublicApartmentCommentBody,
         @CurrentUser() { id: userId }: CurrentUserType,
-        @Param('publicApartmentId') publicApartmentId?: string,
-        @Param('privateApartmentId') privateApartmentId?: string,
+        @Param() params: { publicApartmentId?: string; privateApartmentId?: string },
     ) {
         return await this.service.createApartmentComment({
             body,
             userId,
-            publicApartmentId,
-            privateApartmentId,
+            publicApartmentId: params.publicApartmentId,
+            privateApartmentId: params.privateApartmentId,
         });
     }
 
