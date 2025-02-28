@@ -4,7 +4,6 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/common/types/current-user.type';
 import { CreatePublicApartmentCommentBody } from './dto/request/create-public-apartment-comment.req';
-import { CreatePrivateApartmentCommentBody } from './dto/request/create-private-apartment-comment-req';
 import { GetManyApartmentCommentResponse } from './dto/response/get-many-apartment-comment.res';
 import { GetManyApartmentCommentQuery } from './dto/request/get-many-apartment-comment.req';
 
@@ -23,8 +22,7 @@ export class CommentController {
         return await this.service.createApartmentComment({
             body,
             userId,
-            publicApartmentId: params.publicApartmentId,
-            privateApartmentId: params.privateApartmentId,
+            apartmentId,
         });
     }
 
