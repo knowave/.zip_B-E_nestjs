@@ -13,7 +13,7 @@ import { GetManyApartmentCommentQuery } from './dto/request/get-many-apartment-c
 export class CommentController {
     constructor(private readonly service: CommentService) {}
 
-    @Post('')
+    @Post(['/:publicApartmentId', '/:privateApartmentId'])
     @ApiOperation({ summary: '공/민영 아파트 댓글 작성' })
     async writePublicApartmentComment(
         @Body() body: CreatePublicApartmentCommentBody,
