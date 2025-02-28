@@ -20,4 +20,32 @@ export class PrivateApartmentRepository extends Repository<PrivateApartment> {
             .take(take)
             .getManyAndCount();
     }
+
+    findOneById(id: string) {
+        return this.findOne({ where: { id } });
+    }
+
+    incrementLikeCount(id: string) {
+        return this.increment({ id }, 'likeCount', 1);
+    }
+
+    decrementLikeCount(id: string) {
+        return this.decrement({ id }, 'likeCount', 1);
+    }
+
+    incrementCommentCount(id: string) {
+        return this.increment({ id }, 'commentCount', 1);
+    }
+
+    decrementCommentCount(id: string) {
+        return this.decrement({ id }, 'commentCount', 1);
+    }
+
+    incrementViewCount(id: string) {
+        return this.increment({ id }, 'viewCount', 1);
+    }
+
+    decrementViewCount(id: string) {
+        return this.decrement({ id }, 'viewCount', 1);
+    }
 }

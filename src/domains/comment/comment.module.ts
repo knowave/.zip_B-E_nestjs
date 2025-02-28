@@ -6,9 +6,10 @@ import { Comment } from './entities/comment.entity';
 import { CommentRepository } from './comment.repository';
 import { PublicApartmentModule } from '../public-apartment/public-apartment.module';
 import { UserModule } from '../user/user.module';
+import { PrivateApartmentModule } from '../private-apartment/private-apartment.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Comment]), PublicApartmentModule, UserModule],
+    imports: [TypeOrmModule.forFeature([Comment]), PublicApartmentModule, UserModule, PrivateApartmentModule],
     providers: [CommentService, CommentRepository],
     controllers: [CommentController],
     exports: [CommentService],

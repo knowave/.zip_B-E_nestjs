@@ -11,5 +11,6 @@ import { PrivateApartmentImageRepository } from './repositories/private-apartmen
     imports: [TypeOrmModule.forFeature([PrivateApartment, PrivateApartmentImage])],
     providers: [PrivateApartmentService, PrivateApartmentRepository, PrivateApartmentImageRepository],
     controllers: [PrivateApartmentController],
+    exports: [PrivateApartmentService],
 })
 export class PrivateApartmentModule {}
