@@ -22,7 +22,7 @@ export class LikeService {
 
         if (commentLike) {
             await this.likeRepository.softDelete(commentLike.id);
-            await this.commentService.decrementCommentCount(comment.id);
+            await this.commentService.decrementCommentByLikeCount(comment.id);
             return false;
         } else {
             await this.likeRepository.save(
@@ -31,7 +31,7 @@ export class LikeService {
                     comment: { id: comment.id },
                 }),
             );
-            await this.commentService.incrementCommentCount(comment.id);
+            await this.commentService.incrementCommentByLikeCount(comment.id);
             return true;
         }
     }

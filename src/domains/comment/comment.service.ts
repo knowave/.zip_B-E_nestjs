@@ -78,5 +78,11 @@ export class CommentService {
         });
     }
 
-    async 
+    async incrementCommentByLikeCount(id: string) {
+        await this.commentRepository.increment({ id }, 'likeCount', 1);
+    }
+
+    async decrementCommentByLikeCount(id: string) {
+        await this.commentRepository.decrement({ id }, 'likeCount', 1);
+    }
 }
