@@ -1,10 +1,11 @@
 import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { InjectConnection, MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
+import { MONGO_URI } from 'src/common/env';
 
 @Module({
     imports: [
-        MongooseModule.forRoot(process.env.MONGO_URI, {
+        MongooseModule.forRoot(MONGO_URI, {
             retryWrites: false,
         }),
     ],
