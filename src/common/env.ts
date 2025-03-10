@@ -26,3 +26,5 @@ export const KAKAO_CLIENT_ID = process.env.KAKAO_CLIENT_ID as string;
 export const NAVER_CALLBACK_URL = process.env.NAVER_CALLBACK_URL as string;
 export const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID as string;
 export const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET as string;
+
+export const MONGO_URI = process.env.MONGO_URI as string;
