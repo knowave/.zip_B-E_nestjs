@@ -38,4 +38,9 @@ export const BAD_REQUEST_ERROR = {
         message: 'private apartment id is required when type is PRIVATE_APT',
         statusCode: BAD_REQUEST_ERROR_STATUS_CODE,
     } as Error,
+    INVALID_PUBLIC_APARTMENT_API_RESPONSE: {
+        code: 'INVALID_PUBLIC_APARTMENT_API_RESPONSE',
+        message: 'invalid public apartment api response',
+        statusCode: BAD_REQUEST_ERROR_STATUS_CODE,
+    } as Error,
 };

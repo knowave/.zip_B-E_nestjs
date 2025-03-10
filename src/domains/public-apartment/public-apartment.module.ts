@@ -5,9 +5,10 @@ import { PublicApartmentService } from './public-apartment.service';
 import { PublicApartmentController } from './public-apartment.controller';
 import { PublicApartmentImage } from './entities/public-apartment-image.entity';
 import { PublicApartmentImageRepository } from './repositories/public-apartment-image.repository';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([PublicApartmentRepository, PublicApartmentImage])],
+    imports: [TypeOrmModule.forFeature([PublicApartmentRepository, PublicApartmentImage]), HttpModule],
     providers: [PublicApartmentService, PublicApartmentRepository, PublicApartmentImageRepository],
     controllers: [PublicApartmentController],
     exports: [PublicApartmentService],

@@ -30,3 +30,5 @@ export const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET as string;
 export const MONGO_URI = process.env.MONGO_URI as string;
 export const REDIS_HOST = process.env.REDIS_HOST as string;
 export const REDIS_PORT = process.env.REDIS_PORT as string;
+
+export const PUB_API_SECRET_KEY = process.env.PUB_API_SECRET_KEY as string;
