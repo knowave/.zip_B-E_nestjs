@@ -1,5 +1,6 @@
 import { DynamicModule, Global, Module } from '@nestjs/common';
 import Redis, { RedisOptions } from 'ioredis';
+import { RedisService } from './redis.serivce';
 
 @Global()
 @Module({})
@@ -12,8 +13,8 @@ export class RedisModule {
 
         return {
             module: RedisModule,
-            providers: [provider],
-            exports: [provider],
+            providers: [provider, RedisService],
+            exports: [provider, RedisService],
         };
     }
 }
