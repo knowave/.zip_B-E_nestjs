@@ -1,24 +1,8 @@
-import { Logger, Module, OnModuleInit } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from 'src/common/config/type-orm.config';
-import { DataSource } from 'typeorm';
+import { Module } from '@nestjs/common';
+import { MySQLModule } from './mysql/mysql.module';
+import { MongoModule } from './mongo/mongo.module';
 
 @Module({
-    imports: [TypeOrmModule.forRoot(typeOrmConfig)],
+    imports: [MySQLModule, MongoModule],
 })
-export class DatabaseModule implements OnModuleInit {
-    private readonly logger = new Logger(DatabaseModule.name);
-
-    constructor(private readonly dataSource: DataSource) {}
-
-    async onModuleInit() {
-        const isInitialized = this.dataSource.isInitialized;
-        const database = this.dataSource.options.database;
-
-        try {
-            if (isInitialized) this.logger.log(`Database connected: ${database}`);
-        } catch (err) {
-            this.logger.error(`Failed to initialize database: ${err}`);
-        }
-    }
-}
+export class DatabaseModule {}
