@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PublicApartmentModule } from './public-apartment/public-apartment.module';
 import { PrivateApartmentModule } from './private-apartment/private-apartment.module';
+import { CronModule } from './cron/cron.module';
 
 @Module({
     imports: [
@@ -24,6 +25,7 @@ import { PrivateApartmentModule } from './private-apartment/private-apartment.mo
         UploadModule,
         PublicApartmentModule,
         PrivateApartmentModule,
+        CronModule,
     ],
     controllers: [AppController],
     providers: [AppService, { provide: APP_GUARD, useClass: JWTGuard }],
