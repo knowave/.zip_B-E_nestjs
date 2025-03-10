@@ -3,10 +3,19 @@ import { CronService } from './cron.service';
 import { CronController } from './cron.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CronLog, CronLogSchema } from './schemas/cron.schema';
+import { RedisModule } from '../redis/redis.module';
+import { REDIS_HOST, REDIS_PORT } from 'src/common/env';
+import { CronRepository } from './cron.repository';
 
 @Module({
-    imports: [MongooseModule.forFeature([{ name: CronLog.name, schema: CronLogSchema }])],
+    imports: [
+        MongooseModule.forFeature([{ name: CronLog.name, schema: CronLogSchema }]),
+        RedisModule.forRoot({
+            host: REDIS_HOST || 'localHost',
+            port: +REDIS_PORT || 6379,
+        }),
+    ],
+    providers: [CronService, CronRepository],
     controllers: [CronController],
-    providers: [CronService],
 })
 export class CronModule {}
