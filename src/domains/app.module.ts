@@ -10,8 +10,7 @@ import { JWTGuard } from './auth/guards/jwt.guard';
 import { UploadModule } from './upload/upload.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { PublicApartmentModule } from './public-apartment/public-apartment.module';
-import { PrivateApartmentModule } from './private-apartment/private-apartment.module';
+import { ApartmentModule } from './apartment/apartment.module';
 import { CronModule } from './cron/cron.module';
 
 @Module({
@@ -23,8 +22,7 @@ import { CronModule } from './cron/cron.module';
         LikeModule,
         S3Module,
         UploadModule,
-        PublicApartmentModule,
-        PrivateApartmentModule,
+        ApartmentModule,
         CronModule,
     ],
     controllers: [AppController],

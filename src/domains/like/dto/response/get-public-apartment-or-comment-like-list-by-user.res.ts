@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { PublicApartment } from 'src/domains/public-apartment/entities/public-apartment.entity';
+import { PublicApartment } from 'src/domains/apartment/entities/apartment.entity';
 import { Comment } from 'src/domains/comment/entities/comment.entity';
 import { Like } from '../../entities/like.entity';
 

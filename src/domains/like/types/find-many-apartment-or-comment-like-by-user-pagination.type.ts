@@ -1,6 +1,6 @@
 import { LikeFilterEnum } from '../enums/like-filter.enum';
 
-export type FindManyPublicApartmentOrCommentLikeByUserPaginationType = {
+export type FindManyApartmentOrCommentLikeByUserPaginationType = {
     filter: LikeFilterEnum;
     userId: string;
     skip: number;

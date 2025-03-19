@@ -5,11 +5,10 @@ import { LikeRepository } from './like.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Like } from './entities/like.entity';
 import { CommentModule } from '../comment/comment.module';
-import { PublicApartmentModule } from '../public-apartment/public-apartment.module';
-import { PrivateApartmentModule } from '../private-apartment/private-apartment.module';
+import { ApartmentModule } from '../apartment/apartment.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Like]), CommentModule, PublicApartmentModule, PrivateApartmentModule],
+    imports: [TypeOrmModule.forFeature([Like]), CommentModule, ApartmentModule],
     providers: [LikeService, LikeRepository],
     controllers: [LikeController],
 })

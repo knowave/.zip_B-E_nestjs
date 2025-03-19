@@ -3,7 +3,7 @@ import { CommentRepository } from './comment.repository';
 import { BaseException } from 'src/common/exceptions/error';
 import { NOT_FOUND_ERROR } from 'src/common/exceptions/error-code/not-found.error';
 import { UserService } from '../user/user.service';
-import { PublicApartmentService } from '../public-apartment/public-apartment.service';
+import { PublicApartmentService } from '../apartment/apartment.service';
 import { BAD_REQUEST_ERROR } from 'src/common/exceptions/error-code/bad-request.error';
 import { PrivateApartmentService } from '../private-apartment/private-apartment.service';
 import { createApartmentCommentType } from './types/create-apartment-comment.type';
@@ -38,7 +38,7 @@ export class CommentService {
         const user = await this.userService.getUserById(userId);
         switch (body.type) {
             case CreateCommentTypeEnum.PUBLIC_APT:
-                const publicApartment = await this.publicApartmentService.getPublicApartmentById(apartmentId);
+                const publicApartment = await this.publicApartmentService.getApartmentById(apartmentId);
 
                 createComment = this.commentRepository.create({ ...body, user, publicApartment });
                 await this.commentRepository.save(createComment);

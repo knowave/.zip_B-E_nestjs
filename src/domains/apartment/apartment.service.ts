@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PublicApartmentRepository } from './repositories/public-apartment.repository';
-import { GetPublicApartmentListQuery } from './dto/request/get-public-apartment-list.req';
+import { GetApartmentListQuery } from './dto/request/get-apartment-list.req';
 import { plainToInstance } from 'class-transformer';
-import { GetPublicApartmentListResponse } from './dto/response/get-public-apartment-list.res';
 import { UploadImageUrlListBody } from './dto/request/upload-image-url-list.req';
-import { PublicApartmentImage } from './entities/public-apartment-image.entity';
-import { PublicApartmentImageRepository } from './repositories/public-apartment-image.repository';
 import { BaseException } from 'src/common/exceptions/error';
 import { NOT_FOUND_ERROR } from 'src/common/exceptions/error-code/not-found.error';
 import { format, subDays } from 'date-fns';
@@ -13,19 +9,23 @@ import { toZonedTime } from 'date-fns-tz';
 import { HttpService } from '@nestjs/axios';
 import { BAD_REQUEST_ERROR } from 'src/common/exceptions/error-code/bad-request.error';
 import { PUB_API_SECRET_KEY } from 'src/common/env';
+import { GetApartmentListResponse } from './dto/response/get-apartment-list.res';
+import { ApartmentRepository } from './repositories/apartment.repository';
+import { ApartmentImageRepository } from './repositories/apartment-image.repository';
+import { ApartmentImage } from './entities/apartment-image.entity';
 
 @Injectable()
-export class PublicApartmentService {
+export class ApartmentService {
     constructor(
-        private readonly publicApartmentRepository: PublicApartmentRepository,
-        private readonly publicApartmentImageRepository: PublicApartmentImageRepository,
+        private readonly apartmentRepository: ApartmentRepository,
+        private readonly apartmentImageRepository: ApartmentImageRepository,
         private readonly httpService: HttpService,
     ) {}
 
-    async getPublicApartmentList({ page, take, supplyAreaName, startDate, endDate }: GetPublicApartmentListQuery) {
+    async getApartmentList({ page, take, supplyAreaName, startDate, endDate }: GetApartmentListQuery) {
         const skip = (page - 1) * take;
 
-        const [publicApartmentList, totalCount] = await this.publicApartmentRepository.findManyPagination({
+        const [apartmentList, totalCount] = await this.apartmentRepository.findManyPagination({
             skip,
             take,
             supplyAreaName,
@@ -34,9 +34,9 @@ export class PublicApartmentService {
         });
 
         return plainToInstance(
-            GetPublicApartmentListResponse,
-            <GetPublicApartmentListResponse>{
-                publicApartmentList,
+            GetApartmentListResponse,
+            <GetApartmentListResponse>{
+                apartmentList,
                 currentPage: page,
                 totalPage: Math.ceil(totalCount / take),
                 totalCount,
@@ -49,45 +49,45 @@ export class PublicApartmentService {
     }
 
     async uploadImageUrlList({ imageUrlList }: UploadImageUrlListBody) {
-        const createPublicApartmentImageList: PublicApartmentImage[] = imageUrlList.map((imageUrl) => {
-            return this.publicApartmentImageRepository.create({
+        const createApartmentImageList: ApartmentImage[] = imageUrlList.map((imageUrl) => {
+            return this.apartmentImageRepository.create({
                 imageUrl,
             });
         });
 
-        await this.publicApartmentImageRepository.bulkSave(createPublicApartmentImageList);
+        await this.apartmentImageRepository.bulkSave(createApartmentImageList);
     }
 
-    async getPublicApartmentById(id: string) {
-        const publicApartment = await this.publicApartmentRepository.findOneById(id);
+    async getApartmentById(id: string) {
+        const apartment = await this.apartmentRepository.findOneById(id);
 
-        if (!publicApartment) throw new BaseException(NOT_FOUND_ERROR.PUBLIC_APARTMENT);
+        if (!apartment) throw new BaseException(NOT_FOUND_ERROR.APARTMENT);
 
-        return publicApartment;
+        return apartment;
     }
 
     async incrementLikeCount(id: string) {
-        await this.publicApartmentRepository.incrementLikeCount(id);
+        await this.apartmentRepository.incrementLikeCount(id);
     }
 
     async decrementLikeCount(id: string) {
-        await this.publicApartmentRepository.decrementLikeCount(id);
+        await this.apartmentRepository.decrementLikeCount(id);
     }
 
     async incrementCommentCount(id: string) {
-        await this.publicApartmentRepository.incrementCommentCount(id);
+        await this.apartmentRepository.incrementCommentCount(id);
     }
 
     async decrementCommentCount(id: string) {
-        await this.publicApartmentRepository.decrementCommentCount(id);
+        await this.apartmentRepository.decrementCommentCount(id);
     }
 
     async incrementViewCount(id: string) {
-        await this.publicApartmentRepository.incrementViewCount(id);
+        await this.apartmentRepository.incrementViewCount(id);
     }
 
     async decrementViewCount(id: string) {
-        await this.publicApartmentRepository.decrementViewCount(id);
+        await this.apartmentRepository.decrementViewCount(id);
     }
 
     async createPublicApartmentList() {

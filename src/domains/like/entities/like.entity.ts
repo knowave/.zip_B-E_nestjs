@@ -1,7 +1,6 @@
 import { BaseEntity } from 'src/common/base.entity';
 import { Comment } from 'src/domains/comment/entities/comment.entity';
-import { PrivateApartment } from 'src/domains/private-apartment/entities/private-apartment.entity';
-import { PublicApartment } from 'src/domains/public-apartment/entities/public-apartment.entity';
+import { Apartment } from 'src/domains/apartment/entities/apartment.entity';
 import { User } from 'src/domains/user/entities/user.entity';
 import { Entity, ManyToOne } from 'typeorm';
 
@@ -13,9 +12,6 @@ export class Like extends BaseEntity {
     @ManyToOne(() => Comment, (comment) => comment.likeList)
     comment: Comment;
 
-    @ManyToOne(() => PublicApartment, (apartment) => apartment.likes)
-    publicApartment: PublicApartment;
-
-    @ManyToOne(() => PrivateApartment, (apartment) => apartment.likes)
-    privateApartment: PrivateApartment;
+    @ManyToOne(() => Apartment, (apartment) => apartment.likes)
+    apartment: Apartment;
 }

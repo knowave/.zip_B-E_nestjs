@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { PublicApartment } from '../entities/public-apartment.entity';
+import { Apartment } from '../entities/apartment.entity';
 import { FindManyPaginationType } from '../types/find-many-pagination.type';
 
 @Injectable()
-export class PublicApartmentRepository extends Repository<PublicApartment> {
+export class ApartmentRepository extends Repository<Apartment> {
     constructor(private readonly dataSource: DataSource) {
-        super(PublicApartment, dataSource.createEntityManager());
+        super(Apartment, dataSource.createEntityManager());
     }
 
     findManyPagination({ skip, take, supplyAreaName, startDate, endDate }: FindManyPaginationType) {

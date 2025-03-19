@@ -1,13 +1,13 @@
 import { BaseEntity } from 'src/common/base.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
-import { PublicApartmentImage } from './public-apartment-image.entity';
+import { ApartmentImage } from './apartment-image.entity';
 import { Like } from 'src/domains/like/entities/like.entity';
 import { Comment } from 'src/domains/comment/entities/comment.entity';
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
-export class PublicApartment extends BaseEntity {
+export class Apartment extends BaseEntity {
     @Expose()
     @ApiProperty()
     @Column({ type: 'varchar', nullable: false, comment: '공고 상태' })
@@ -158,12 +158,12 @@ export class PublicApartment extends BaseEntity {
     @Column({ type: 'integer', default: 0, comment: '아파트 좋아요 수' })
     likeCount: number;
 
-    @OneToMany(() => PublicApartmentImage, (image) => image.publicApartment, { cascade: true })
-    images: PublicApartmentImage[];
+    @OneToMany(() => ApartmentImage, (image) => image.apartment, { cascade: true })
+    images: ApartmentImage[];
 
-    @OneToMany(() => Like, (like) => like.publicApartment, { cascade: true })
+    @OneToMany(() => Like, (like) => like.apartment, { cascade: true })
     likes: Like[];
 
-    @OneToMany(() => Comment, (comment) => comment.publicApartment, { cascade: true })
+    @OneToMany(() => Comment, (comment) => comment.apartment, { cascade: true })
     comments: Comment[];
 }

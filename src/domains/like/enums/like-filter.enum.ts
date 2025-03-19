@@ -1,5 +1,5 @@
 export enum LikeFilterEnum {
     ALL = 'ALL',
-    PUBLIC_APARTMENT = 'PUBLIC_APARTMENT',
+    APT = 'APT',
     COMMENT = 'COMMENT',
 }

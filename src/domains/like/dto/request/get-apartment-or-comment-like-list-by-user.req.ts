@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
 import { LikeFilterEnum } from '../../enums/like-filter.enum';
 
 export class GetPublicApartmentOrCommentLikeListByUserQuery {

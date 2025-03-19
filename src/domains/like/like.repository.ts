@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Like } from './entities/like.entity';
-import { FindManyPublicApartmentOrCommentLikeByUserPaginationType } from './types/find-many-public-apartment-or-comment-like-by-user-pagination.type';
+import { FindManyApartmentOrCommentLikeByUserPaginationType } from './types/find-many-apartment-or-comment-like-by-user-pagination.type';
 import { LikeFilterEnum } from './enums/like-filter.enum';
 
 @Injectable()
@@ -16,33 +16,33 @@ export class LikeRepository extends Repository<Like> {
         });
     }
 
-    findOneByUserIdAndPublicApartmentId(userId: string, publicApartmentId: string) {
+    findOneByUserIdAndApartmentId(userId: string, apartmentId: string) {
         return this.findOne({
-            where: { user: { id: userId }, publicApartment: { id: publicApartmentId } },
+            where: { user: { id: userId }, apartment: { id: apartmentId } },
         });
     }
 
-    findManyPublicApartmentOrCommentLikeByUserPagination({
+    findManyApartmentOrCommentLikeByUserPagination({
         filter,
         userId,
         skip,
         take,
-    }: FindManyPublicApartmentOrCommentLikeByUserPaginationType) {
+    }: FindManyApartmentOrCommentLikeByUserPaginationType) {
         const query = this.createQueryBuilder('like')
             .leftJoinAndSelect('like.user', 'user')
             .leftJoinAndSelect('like.comment', 'comment')
-            .leftJoinAndSelect('like.publicApartment', 'pa')
+            .leftJoinAndSelect('like.apartment', 'apt')
             .where('user.id = :userId', { userId });
 
         switch (filter) {
             case LikeFilterEnum.COMMENT:
-                query.andWhere('comment.id IS NOT NULL').andWhere('pa.id IS NULL');
+                query.andWhere('comment.id IS NOT NULL').andWhere('apt.id IS NULL');
                 break;
-            case LikeFilterEnum.PUBLIC_APARTMENT:
-                query.andWhere('pa.id IS NOT NULL').andWhere('comment.id IS NULL');
+            case LikeFilterEnum.APT:
+                query.andWhere('apt.id IS NOT NULL').andWhere('comment.id IS NULL');
                 break;
             case LikeFilterEnum.ALL:
-                query.andWhere('comment.id IS NOT NULL').andWhere('pa.id IS NOT NULL');
+                query.andWhere('comment.id IS NOT NULL').andWhere('apt.id IS NOT NULL');
                 break;
         }
 
