@@ -89,7 +89,7 @@ export class ApartmentService {
         await this.apartmentRepository.decrementViewCount(id);
     }
 
-    async createPublicApartmentList() {
+    async createApartmentList() {
         const createApartmentList: Apartment[] = [];
 
         for (let i = 1; i <= 10; i++) {

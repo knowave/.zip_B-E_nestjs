@@ -6,6 +6,7 @@ import { CronLog, CronLogSchema } from './schemas/cron.schema';
 import { RedisModule } from '../redis/redis.module';
 import { REDIS_HOST, REDIS_PORT } from 'src/common/env';
 import { CronRepository } from './cron.repository';
+import { ApartmentModule } from '../apartment/apartment.module';
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { CronRepository } from './cron.repository';
             host: REDIS_HOST || 'localHost',
             port: +REDIS_PORT || 6379,
         }),
+        ApartmentModule,
     ],
     providers: [CronService, CronRepository],
     controllers: [CronController],
