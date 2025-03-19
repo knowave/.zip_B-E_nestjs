@@ -11,6 +11,7 @@ import { ApartmentRepository } from './repositories/apartment.repository';
 import { ApartmentImageRepository } from './repositories/apartment-image.repository';
 import { ApartmentImage } from './entities/apartment-image.entity';
 import { Cron } from '@nestjs/schedule';
+import { Apartment } from './entities/apartment.entity';
 
 @Injectable()
 export class ApartmentService {
@@ -88,9 +89,9 @@ export class ApartmentService {
         await this.apartmentRepository.decrementViewCount(id);
     }
 
-    @Cron('*/10 * * * * *')
     async createPublicApartmentList() {
-        console.log('createPublicApartmentList');
+        const createApartmentList: Apartment[] = [];
+
         for (let i = 1; i <= 10; i++) {
             const page = i;
             const perPage = 10;
@@ -103,9 +104,29 @@ export class ApartmentService {
             };
 
             const res = await this.httpService.axiosRef(options);
-            const data = res.data;
+            const data = res.data.data;
 
-            data.forEach((item) => console.log(item));
+            data.forEach((item) => {
+                createApartmentList.push(
+                    this.apartmentRepository.create({
+                        contractPeriod: item['계약기간'],
+                        announcementName: item['공고명'],
+                        announcementDate: item['공고일자'],
+                        announcementType: item['공고종류'],
+                        numberOfUnits: item['금회분양세대수'],
+                        block: item['블록'],
+                        businessDistrict: item['사업지구'],
+                        isCapitalArea: item['수도권여부'],
+                        monthlyRent: item['월임대료'],
+                        leaseDeposit: item['임대보증금'],
+                        housingType: item['주택형'],
+                        regionalOffice: item['지역본부'],
+                        totalHouseholds: item['총세대수'],
+                    }),
+                );
+            });
         }
+
+        await this.apartmentRepository.bulkSave(createApartmentList);
     }
 }
