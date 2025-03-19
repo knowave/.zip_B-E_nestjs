@@ -92,10 +92,6 @@ export class ApartmentService {
     async createPublicApartmentList() {
         console.log('createPublicApartmentList');
         for (let i = 1; i <= 10; i++) {
-            const decodedKey = decodeURI(
-                'I5WETGY4P%2FqSCooaFLOhC4ncjZiQtbUudlGW4jJMwlyyYul3tIE1k4c16lUNrv1I5%2BAffIb%2B2EKNjgUrak52rw%3D%3D',
-            );
-
             const page = i;
             const perPage = 10;
             const url = `https://api.odcloud.kr/api/15072462/v1/uddi:4f4e5a40-79d9-46a2-9139-82384b6af774?page=${page}&perPage=${perPage}&serviceKey=${APT_API_SECRET_KEY}`;
@@ -107,7 +103,9 @@ export class ApartmentService {
             };
 
             const res = await this.httpService.axiosRef(options);
-            console.log(res.data);
+            const data = res.data;
+
+            data.forEach((item) => console.log(item));
         }
     }
 }
