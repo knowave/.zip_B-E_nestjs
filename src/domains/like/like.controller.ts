@@ -6,7 +6,7 @@ import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/common/types/current-user.type';
 import { ApartmentLikeParam } from './dto/request/apartment-like.req';
 import { GetPublicApartmentOrCommentLikeListByUserQuery } from './dto/request/get-apartment-or-comment-like-list-by-user.req';
-import { GetPublicApartmentLikeOrCommentListResponse } from './dto/response/get-public-apartment-or-comment-like-list-by-user.res';
+import { GetPublicApartmentLikeOrCommentListResponse } from './dto/response/get-apartment-or-comment-like-list-by-user.res';
 
 @Controller('like')
 export class LikeController {

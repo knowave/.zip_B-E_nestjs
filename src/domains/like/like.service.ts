@@ -6,7 +6,7 @@ import { ApartmentLikeParam } from './dto/request/apartment-like.req';
 import { ApartmentService } from '../apartment/apartment.service';
 import { GetPublicApartmentOrCommentLikeListByUserQuery } from './dto/request/get-apartment-or-comment-like-list-by-user.req';
 import { plainToInstance } from 'class-transformer';
-import { GetPublicApartmentLikeOrCommentListResponse } from './dto/response/get-public-apartment-or-comment-like-list-by-user.res';
+import { GetPublicApartmentLikeOrCommentListResponse } from './dto/response/get-apartment-or-comment-like-list-by-user.res';
 
 @Injectable()
 export class LikeService {

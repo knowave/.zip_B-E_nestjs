@@ -3,9 +3,8 @@ import { CommentRepository } from './comment.repository';
 import { BaseException } from 'src/common/exceptions/error';
 import { NOT_FOUND_ERROR } from 'src/common/exceptions/error-code/not-found.error';
 import { UserService } from '../user/user.service';
-import { PublicApartmentService } from '../apartment/apartment.service';
+import { ApartmentService } from '../apartment/apartment.service';
 import { BAD_REQUEST_ERROR } from 'src/common/exceptions/error-code/bad-request.error';
-import { PrivateApartmentService } from '../private-apartment/private-apartment.service';
 import { createApartmentCommentType } from './types/create-apartment-comment.type';
 import { CreateCommentTypeEnum } from './enums/create-comment-type.enum';
 import { Comment } from './entities/comment.entity';
@@ -19,8 +18,7 @@ export class CommentService {
     constructor(
         private readonly commentRepository: CommentRepository,
         private readonly userService: UserService,
-        private readonly publicApartmentService: PublicApartmentService,
-        private readonly privateApartmentService: PrivateApartmentService,
+        private readonly apartmentService: ApartmentService,
     ) {}
 
     async getCommentById(id: string) {
@@ -37,20 +35,12 @@ export class CommentService {
         let createComment: Comment;
         const user = await this.userService.getUserById(userId);
         switch (body.type) {
-            case CreateCommentTypeEnum.PUBLIC_APT:
-                const publicApartment = await this.publicApartmentService.getApartmentById(apartmentId);
+            case CreateCommentTypeEnum.APT:
+                const apartment = await this.apartmentService.getApartmentById(apartmentId);
 
-                createComment = this.commentRepository.create({ ...body, user, publicApartment });
+                createComment = this.commentRepository.create({ ...body, user, apartment });
                 await this.commentRepository.save(createComment);
-                await this.publicApartmentService.incrementCommentCount(publicApartment.id);
-                break;
-
-            case CreateCommentTypeEnum.PRIVATE_APT:
-                const privateApartment = await this.privateApartmentService.getPrivateApartmentById(apartmentId);
-
-                createComment = this.commentRepository.create({ ...body, user, privateApartment });
-                await this.commentRepository.save(createComment);
-                await this.privateApartmentService.incrementCommentCount(apartmentId);
+                await this.apartmentService.incrementCommentCount(apartment.id);
                 break;
         }
     }

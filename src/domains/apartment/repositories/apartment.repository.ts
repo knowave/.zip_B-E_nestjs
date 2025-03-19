@@ -15,11 +15,11 @@ export class ApartmentRepository extends Repository<Apartment> {
         if (secondSpell === '상') supplyAreaName = '경상';
         if (secondSpell === '기') supplyAreaName = '경기';
 
-        return this.createQueryBuilder('pa')
-            .leftJoinAndSelect('pa.images', 'images')
-            .where('pa.supplyAreaName LIKE :supplyAreaName', { supplyAreaName: `${supplyAreaName}%` })
-            .andWhere('pa.postDate BETWEEN :startDate AND :endDate', { startDate, endDate })
-            .orderBy('pa.postDate', 'DESC')
+        return this.createQueryBuilder('apt')
+            .leftJoinAndSelect('apt.images', 'images')
+            .where('apt.supplyAreaName LIKE :supplyAreaName', { supplyAreaName: `${supplyAreaName}%` })
+            .andWhere('apt.postDate BETWEEN :startDate AND :endDate', { startDate, endDate })
+            .orderBy('apt.postDate', 'DESC')
             .skip(skip)
             .take(take)
             .getManyAndCount();
@@ -51,5 +51,9 @@ export class ApartmentRepository extends Repository<Apartment> {
 
     decrementViewCount(id: string) {
         return this.decrement({ id }, 'viewCount', 1);
+    }
+
+    bulkSave(apartmentList: Apartment[]) {
+        return this.save(apartmentList);
     }
 }

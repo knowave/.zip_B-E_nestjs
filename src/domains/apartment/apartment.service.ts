@@ -4,15 +4,13 @@ import { plainToInstance } from 'class-transformer';
 import { UploadImageUrlListBody } from './dto/request/upload-image-url-list.req';
 import { BaseException } from 'src/common/exceptions/error';
 import { NOT_FOUND_ERROR } from 'src/common/exceptions/error-code/not-found.error';
-import { format, subDays } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
 import { HttpService } from '@nestjs/axios';
-import { BAD_REQUEST_ERROR } from 'src/common/exceptions/error-code/bad-request.error';
-import { PUB_API_SECRET_KEY } from 'src/common/env';
+import { APT_API_SECRET_KEY } from 'src/common/env';
 import { GetApartmentListResponse } from './dto/response/get-apartment-list.res';
 import { ApartmentRepository } from './repositories/apartment.repository';
 import { ApartmentImageRepository } from './repositories/apartment-image.repository';
 import { ApartmentImage } from './entities/apartment-image.entity';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class ApartmentService {
@@ -90,22 +88,26 @@ export class ApartmentService {
         await this.apartmentRepository.decrementViewCount(id);
     }
 
+    @Cron('*/10 * * * * *')
     async createPublicApartmentList() {
-        const UATC_list = ['06', '39', '05'];
+        console.log('createPublicApartmentList');
+        for (let i = 1; i <= 10; i++) {
+            const decodedKey = decodeURI(
+                'I5WETGY4P%2FqSCooaFLOhC4ncjZiQtbUudlGW4jJMwlyyYul3tIE1k4c16lUNrv1I5%2BAffIb%2B2EKNjgUrak52rw%3D%3D',
+            );
 
-        const now = new Date();
-        const koreaTime = toZonedTime(now, 'Asia/Seoul');
-        const yesterday = format(subDays(koreaTime, 1), 'yyyy-MM-dd');
+            const page = i;
+            const perPage = 10;
+            const url = `https://api.odcloud.kr/api/15072462/v1/uddi:4f4e5a40-79d9-46a2-9139-82384b6af774?page=${page}&perPage=${perPage}&serviceKey=${APT_API_SECRET_KEY}`;
 
-        for (const UATC of UATC_list) {
             const options = {
                 method: 'GET',
-                url: `http://apis.data.go.kr/B552555/lhLeaseNoticeInfo1/lhLeaseNoticeInfo1?serviceKey=${PUB_API_SECRET_KEY}&PG_SZ=300&PAGE=1&PAN_ST_DT=${yesterday}&UPP_AIS_TP_CD=${UATC_list[UATC]}`,
+                url,
                 headers: {},
             };
 
             const res = await this.httpService.axiosRef(options);
-            // res.data.pipe();
+            console.log(res.data);
         }
     }
 }

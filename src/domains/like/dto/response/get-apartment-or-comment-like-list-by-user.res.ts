@@ -1,17 +1,17 @@
 import { Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { PublicApartment } from 'src/domains/apartment/entities/apartment.entity';
+import { Apartment } from 'src/domains/apartment/entities/apartment.entity';
 import { Comment } from 'src/domains/comment/entities/comment.entity';
 import { Like } from '../../entities/like.entity';
 
-export class GetPublicApartmentResponse extends PublicApartment {}
+export class GetApartmentResponse extends Apartment {}
 
 export class GetCommentResponse extends Comment {}
 
 export class GetPublicApartmentOrCommentLikeResponse extends Like {
     @Expose()
-    @Type(() => GetPublicApartmentResponse)
-    publicApartment: GetPublicApartmentResponse;
+    @Type(() => GetApartmentResponse)
+    apartment: GetApartmentResponse;
 
     @Expose()
     @Type(() => GetCommentResponse)
