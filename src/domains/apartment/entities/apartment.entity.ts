@@ -10,118 +10,78 @@ import { ApiProperty } from '@nestjs/swagger';
 export class Apartment extends BaseEntity {
     @Expose()
     @ApiProperty()
-    @Column({ type: 'varchar', nullable: false, comment: '공고 상태' })
-    status: string;
+    @Column({ type: 'varchar', nullable: false, comment: '계약기간' })
+    contractPeriod: string;
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '공고 게시일' })
-    postDate: Date;
+    @Column({ type: 'date', nullable: false, comment: '계약기간 게시일' })
+    contractPeriodAnnouncementDate: Date;
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '공고 만료일' })
-    expiredDate: Date;
+    @Column({ type: 'date', nullable: false, comment: '계약기간 만료일' })
+    contractPeriodExpiredDate: Date;
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'varchar', nullable: false, comment: '아파트 매물 유형 코드' })
-    apartmentTypeCode: string;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'varchar', nullable: false, comment: '아파트 공급 정보 구분 코드' })
-    supplyInfoTypeCode: string;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'varchar', nullable: false, comment: '아파트 공급 지역명' })
-    supplyAreaName: string;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'varchar', nullable: false, comment: '아파트 공고 유형명' })
-    supplyTypeName: string;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'varchar', nullable: false, comment: '아파트 공고 세부 유형명' })
-    supplyDetailTypeName: string;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '아파트 청약 신청일' })
-    applicationDate: Date;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '아파트 청약 신청 만료일' })
-    applicationExpiredDate: Date;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '아파트 청약 발표일' })
-    announcementDate: Date;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '아파트 공고 서류 제출일' })
-    documentSubmissionDate: Date;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '아파트 공고 서류 제출 만료일' })
-    documentSubmissionExpiredDate: Date;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '아파트 계약 시작일' })
-    contractStartDate: Date;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '아파트 계약 종료일' })
-    contractEndDate: Date;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'integer', nullable: false, comment: '아파트 총 세대수' })
-    totalHouseholds: number;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'integer', nullable: false, comment: '아파트 전용 면적' })
-    exclusiveArea: number;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '아파트 입주 예정일' })
-    expectedMoveInDate: Date;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'varchar', nullable: false, comment: '아파트 난방 방식' })
-    heatingType: string;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '아파트 모집 공고일' })
-    recruitmentAnnouncementDate: Date;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'varchar', nullable: false, comment: '아파트 상위 매물 유형 코드' })
-    upperApartmentTypeCode: string;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'varchar', nullable: false, comment: '아파트 공고명' })
+    @Column({ type: 'date', nullable: false, comment: '공고명' })
     announcementName: string;
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'varchar', nullable: false, comment: '아파트 공고 번호' })
-    announcementNumber: string;
+    @Column({ type: 'date', nullable: false, comment: '공고일자' })
+    announcementDate: Date;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'varchar', nullable: false, comment: '공고종류' })
+    announcementType: string;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'integer', nullable: false, comment: '금회분양세대수' })
+    numberOfUnits: number;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'varchar', nullable: false, comment: '블록' })
+    block: string;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'varchar', nullable: false, comment: '사업지구' })
+    businessDistrict: string;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'boolean', nullable: false, comment: '수도권 여부' })
+    isCapitalArea: boolean;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'integer', nullable: false, comment: '월임대료' })
+    monthlyRent: number;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'integer', nullable: false, comment: '임대보증금' })
+    leaseDeposit: number;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'varchar', length: 50, nullable: false, comment: '주택형' })
+    housingType: string;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'varchar', length: 50, nullable: false, comment: '지역본부' })
+    regionalOffice: string;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'integer', nullable: false, comment: '총세대수' })
+    totalHouseholds: number;
 
     @Expose()
     @ApiProperty()
@@ -130,28 +90,34 @@ export class Apartment extends BaseEntity {
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'varchar', length: 2083, nullable: false, comment: '아파트 공고문 다운 링크' })
-    announcementDownloadLink: string;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'varchar', length: 255, nullable: false, comment: '아파트 주소' })
-    address: string;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'varchar', length: 2083, nullable: false, comment: '아파트 공고 상세 URL' })
-    detailUrl: string;
-
-    @Expose()
-    @ApiProperty()
-    @Column({ type: 'varchar', nullable: false, comment: '아파트 고객센터 연계 시스템 구분코드' })
-    customerCenterSystemTypeCode: string;
-
-    @Expose()
-    @ApiProperty()
     @Column({ type: 'integer', default: 0, comment: '아파트 댓글 수' })
     commentCount: number;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'varchar', default: false, comment: '분양기상한제' })
+    subsidy: string;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'integer', default: 0, comment: '초기 분납금' })
+    initialPayment: number;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'integer', default: 0, comment: '계약금' })
+    contractDeposit: number;
+
+    // 중도금
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'integer', default: 0, comment: '중도금' })
+    midPayment: number;
+
+    @Expose()
+    @ApiProperty()
+    @Column({ type: 'integer', default: 0, comment: '잔금' })
+    remainingBalance: number;
 
     @Expose()
     @ApiProperty()
