@@ -13,6 +13,7 @@ import { ApartmentImage } from './entities/apartment-image.entity';
 import { Apartment } from './entities/apartment.entity';
 import { RedisService } from '../redis/redis.serivce';
 import { GetApartmentViewTopTenResponse } from './dto/response/get-apartment-view-top-ten.res';
+import { GetApartmentByIdResponse } from './dto/response/get-apartment-by-id.res';
 
 @Injectable()
 export class ApartmentService {
@@ -66,7 +67,16 @@ export class ApartmentService {
 
         if (!apartment) throw new BaseException(NOT_FOUND_ERROR.APARTMENT);
 
-        return apartment;
+        return plainToInstance(
+            GetApartmentByIdResponse,
+            <GetApartmentByIdResponse>{
+                ...apartment,
+            },
+            {
+                excludeExtraneousValues: true,
+                enableImplicitConversion: true,
+            },
+        );
     }
 
     async incrementLikeCount(id: string) {
