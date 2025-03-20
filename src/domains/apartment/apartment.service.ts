@@ -116,7 +116,7 @@ export class ApartmentService {
                         numberOfUnits: item['금회분양세대수'],
                         block: item['블록'],
                         businessDistrict: item['사업지구'],
-                        isCapitalArea: item['수도권여부'],
+                        isCapitalArea: item['수도권여부'] === '수도권' ? true : false,
                         monthlyRent: item['월임대료'],
                         leaseDeposit: item['임대보증금'],
                         housingType: item['주택형'],
