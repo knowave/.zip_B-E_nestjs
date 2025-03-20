@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApartmentService } from './apartment.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetApartmentListQuery } from './dto/request/get-apartment-list.req';
@@ -15,5 +15,11 @@ export class ApartmentController {
     @ApiResponse({ type: GetApartmentListResponse })
     async getApartmentList(@Query() query: GetApartmentListQuery) {
         return this.apartmentService.getApartmentList(query);
+    }
+
+    @Post('view-count/:id')
+    @ApiOperation({ summary: '아파트 조회 수 증가' })
+    async incrementViewCount(@Param('id') id: string) {
+        return this.apartmentService.incrementViewCount(id);
     }
 }
