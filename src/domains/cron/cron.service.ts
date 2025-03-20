@@ -30,18 +30,6 @@ export class CronService {
             return;
         }
 
-        const lockAcquired = await this.redisService.setLock(this.lockKey, this.lockTTL);
-
-        if (!lockAcquired) {
-            this.logger.warn('Another instance is running, Skip...');
-            this.cronRepository.createCronLog({
-                name: this.lockKey,
-                status: false,
-                time: 0,
-            });
-            return;
-        }
-
         try {
             const startTime = Date.now();
             this.logger.log('Start Daily Apartment Supply Cron Job');
