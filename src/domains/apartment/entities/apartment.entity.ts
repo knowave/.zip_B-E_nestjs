@@ -15,23 +15,23 @@ export class Apartment extends BaseEntity {
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '계약기간 게시일' })
-    contractPeriodAnnouncementDate: Date;
+    @Column({ type: 'date', nullable: true, comment: '계약기간 게시일' })
+    contractPeriodAnnouncementDate?: Date;
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '계약기간 만료일' })
-    contractPeriodExpiredDate: Date;
+    @Column({ type: 'date', nullable: true, comment: '계약기간 만료일' })
+    contractPeriodExpiredDate?: Date;
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '공고명' })
+    @Column({ type: 'varchar', nullable: false, comment: '공고명' })
     announcementName: string;
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'date', nullable: false, comment: '공고일자' })
-    announcementDate: Date;
+    @Column({ type: 'date', nullable: true, comment: '공고일자' })
+    announcementDate?: Date;
 
     @Expose()
     @ApiProperty()
@@ -60,13 +60,13 @@ export class Apartment extends BaseEntity {
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'integer', nullable: false, comment: '월임대료' })
-    monthlyRent: number;
+    @Column({ type: 'integer', nullable: true, comment: '월임대료' })
+    monthlyRent?: number;
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'integer', nullable: false, comment: '임대보증금' })
-    leaseDeposit: number;
+    @Column({ type: 'integer', nullable: true, comment: '임대보증금' })
+    leaseDeposit?: number;
 
     @Expose()
     @ApiProperty()
@@ -85,7 +85,7 @@ export class Apartment extends BaseEntity {
 
     @Expose()
     @ApiProperty()
-    @Column({ type: 'integer', nullable: false, comment: '아파트 조회 건수' })
+    @Column({ type: 'integer', default: 0, comment: '아파트 조회 건수' })
     viewCount: number;
 
     @Expose()
