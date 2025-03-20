@@ -56,4 +56,15 @@ export class ApartmentRepository extends Repository<Apartment> {
     bulkSave(apartmentList: Apartment[]) {
         return this.save(apartmentList);
     }
+
+    getApartmentViewTopTen() {
+        return this.find({
+            select: ['announcementName', 'viewCount'],
+            order: {
+                viewCount: 'DESC',
+                announcementName: 'ASC',
+            },
+            take: 10,
+        });
+    }
 }

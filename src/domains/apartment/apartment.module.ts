@@ -7,9 +7,15 @@ import { ApartmentImage } from './entities/apartment-image.entity';
 import { ApartmentImageRepository } from './repositories/apartment-image.repository';
 import { HttpModule } from '@nestjs/axios';
 import { ScheduleModule } from '@nestjs/schedule';
+import { RedisModule } from '../redis/redis.module';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([ApartmentRepository, ApartmentImage]), HttpModule, ScheduleModule.forRoot()],
+    imports: [
+        TypeOrmModule.forFeature([ApartmentRepository, ApartmentImage]),
+        HttpModule,
+        ScheduleModule.forRoot(),
+        RedisModule,
+    ],
     providers: [ApartmentService, ApartmentRepository, ApartmentImageRepository],
     controllers: [ApartmentController],
     exports: [ApartmentService],

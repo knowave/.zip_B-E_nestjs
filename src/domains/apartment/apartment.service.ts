@@ -10,15 +10,19 @@ import { GetApartmentListResponse } from './dto/response/get-apartment-list.res'
 import { ApartmentRepository } from './repositories/apartment.repository';
 import { ApartmentImageRepository } from './repositories/apartment-image.repository';
 import { ApartmentImage } from './entities/apartment-image.entity';
-import { Cron } from '@nestjs/schedule';
 import { Apartment } from './entities/apartment.entity';
+import { RedisService } from '../redis/redis.serivce';
+import { GetApartmentViewTopTenResponse } from './dto/response/get-apartment-view-top-ten.res';
 
 @Injectable()
 export class ApartmentService {
+    private readonly cacheKey = 'apartment-view-top-ten';
+
     constructor(
         private readonly apartmentRepository: ApartmentRepository,
         private readonly apartmentImageRepository: ApartmentImageRepository,
         private readonly httpService: HttpService,
+        private readonly redisService: RedisService,
     ) {}
 
     async getApartmentList({ page, take, supplyAreaName, startDate, endDate }: GetApartmentListQuery) {
@@ -66,26 +70,32 @@ export class ApartmentService {
     }
 
     async incrementLikeCount(id: string) {
+        await this.redisService.del(this.cacheKey);
         await this.apartmentRepository.incrementLikeCount(id);
     }
 
     async decrementLikeCount(id: string) {
+        await this.redisService.del(this.cacheKey);
         await this.apartmentRepository.decrementLikeCount(id);
     }
 
     async incrementCommentCount(id: string) {
+        await this.redisService.del(this.cacheKey);
         await this.apartmentRepository.incrementCommentCount(id);
     }
 
     async decrementCommentCount(id: string) {
+        await this.redisService.del(this.cacheKey);
         await this.apartmentRepository.decrementCommentCount(id);
     }
 
     async incrementViewCount(id: string) {
+        await this.redisService.del(this.cacheKey);
         await this.apartmentRepository.incrementViewCount(id);
     }
 
     async decrementViewCount(id: string) {
+        await this.redisService.del(this.cacheKey);
         await this.apartmentRepository.decrementViewCount(id);
     }
 
@@ -128,5 +138,38 @@ export class ApartmentService {
         }
 
         await this.apartmentRepository.bulkSave(createApartmentList);
+    }
+
+    async getApartmentViewTopTen() {
+        const ttl = 60 * 60 * 24; // 24시간
+
+        const cachedData = await this.redisService.get(this.cacheKey);
+
+        if (cachedData) {
+            return plainToInstance(
+                GetApartmentViewTopTenResponse,
+                <GetApartmentViewTopTenResponse>{
+                    apartmentList: JSON.parse(cachedData),
+                },
+                {
+                    excludeExtraneousValues: true,
+                    enableImplicitConversion: true,
+                },
+            );
+        }
+
+        const apartmentList = await this.apartmentRepository.getApartmentViewTopTen();
+        await this.redisService.set(this.cacheKey, JSON.stringify(apartmentList), ttl);
+
+        return plainToInstance(
+            GetApartmentViewTopTenResponse,
+            <GetApartmentViewTopTenResponse>{
+                apartmentList,
+            },
+            {
+                excludeExtraneousValues: true,
+                enableImplicitConversion: true,
+            },
+        );
     }
 }
