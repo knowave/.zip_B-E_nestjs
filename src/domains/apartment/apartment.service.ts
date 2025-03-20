@@ -137,6 +137,7 @@ export class ApartmentService {
             });
         }
 
+        await this.redisService.del(this.cacheKey);
         await this.apartmentRepository.bulkSave(createApartmentList);
     }
 
