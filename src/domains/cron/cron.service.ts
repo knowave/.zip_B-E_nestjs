@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { RedisService } from '../redis/redis.serivce';
 import { Cron } from '@nestjs/schedule';
 import { CronRepository } from './cron.repository';
-import { ApartmentService } from '../apartment/apartment.service';
 import { QueueService } from '../queue/queue.service';
 
 @Injectable()
