@@ -3,6 +3,7 @@ import { RedisService } from '../redis/redis.serivce';
 import { Cron } from '@nestjs/schedule';
 import { CronRepository } from './cron.repository';
 import { ApartmentService } from '../apartment/apartment.service';
+import { QueueService } from '../queue/queue.service';
 
 @Injectable()
 export class CronService {
@@ -13,10 +14,10 @@ export class CronService {
     constructor(
         private readonly redisService: RedisService,
         private readonly cronRepository: CronRepository,
-        private readonly apartmentService: ApartmentService,
+        private readonly queueService: QueueService,
     ) {}
 
-    @Cron('0 6 * * *', { name: 'daily-apartment-supply-cron-job', timeZone: 'Asia/Seoul' })
+    @Cron('0 6 * * *', { name: 'apartment-supply-job', timeZone: 'Asia/Seoul' })
     async handleDailyApartmentSupplyCronJob() {
         const lock = await this.redisService.setLock(this.lockKey, this.lockTTL);
 
@@ -32,9 +33,7 @@ export class CronService {
 
         try {
             const startTime = Date.now();
-            this.logger.log('Start Daily Apartment Supply Cron Job');
-            await this.apartmentService.createApartmentList();
-            this.logger.log('End Daily Apartment Supply Cron Job');
+            await this.queueService.addApartmentSupplyJob();
             const endTime = Date.now();
             this.cronRepository.createCronLog({
                 name: this.lockKey,
