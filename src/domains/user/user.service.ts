@@ -142,4 +142,12 @@ export class UserService {
         const createUser = this.userRepository.create({ email, nickname, socialId, socialLoginType });
         return await this.userRepository.save(createUser);
     }
+
+    async checkEmail(email: string) {
+        const user = await this.userRepository.findOneByEmail(email);
+
+        if (user) throw new BaseException(BAD_REQUEST_ERROR.ALREADY_EXIST_EMAIL);
+
+        return true;
+    }
 }

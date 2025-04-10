@@ -43,4 +43,9 @@ export const BAD_REQUEST_ERROR = {
         message: 'invalid public apartment api response',
         statusCode: BAD_REQUEST_ERROR_STATUS_CODE,
     } as Error,
+    ALREADY_EXIST_EMAIL: {
+        code: 'ALREADY_EXIST_EMAIL',
+        message: 'already exist email.',
+        statusCode: BAD_REQUEST_ERROR_STATUS_CODE,
+    } as Error,
 };
