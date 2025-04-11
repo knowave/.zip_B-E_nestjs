@@ -4,7 +4,7 @@ import { Comment } from 'src/domains/comment/entities/comment.entity';
 import { Like } from 'src/domains/like/entities/like.entity';
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 @Entity()
 export class User extends BaseEntity {
@@ -35,12 +35,14 @@ export class User extends BaseEntity {
 
     @Expose()
     @IsString()
+    @IsOptional()
     @ApiProperty({ description: '소셜 아이디 고유 식별자' })
     @Column({ type: 'varchar', unique: true, nullable: true, comment: '소셜 아이디 고유 식별자' })
     socialId?: string;
 
     @Expose()
     @IsString()
+    @IsOptional()
     @ApiProperty({ description: '소셜 로그인 타입', example: 'naver' })
     @Column({ type: 'varchar', nullable: true, comment: '소셜 로그인 타입' })
     socialLoginType?: string;
