@@ -26,7 +26,11 @@ export class ApartmentRepository extends Repository<Apartment> {
     }
 
     findOneById(id: string) {
-        return this.findOne({ where: { id }, relations: ['comments', 'comments.user'] });
+        return this.createQueryBuilder('apt')
+            .leftJoinAndSelect('apt.comments', 'comments')
+            .leftJoinAndSelect('comments.user', 'user')
+            .where('apt.id = :id', { id })
+            .getOne();
     }
 
     incrementLikeCount(id: string) {

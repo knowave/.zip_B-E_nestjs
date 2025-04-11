@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/common/types/current-user.type';
 import { CreatePublicApartmentCommentBody } from './dto/request/create-public-apartment-comment.req';
@@ -14,10 +14,11 @@ export class CommentController {
 
     @Post(['/:apartmentId'])
     @ApiOperation({ summary: '공/민영 아파트 댓글 작성' })
+    @ApiBody({ type: CreatePublicApartmentCommentBody })
     async writePublicApartmentComment(
         @Body() body: CreatePublicApartmentCommentBody,
         @CurrentUser() { id: userId }: CurrentUserType,
-        @Param() apartmentId: string,
+        @Param('apartmentId') apartmentId: string,
     ) {
         return await this.service.createApartmentComment({
             body,
