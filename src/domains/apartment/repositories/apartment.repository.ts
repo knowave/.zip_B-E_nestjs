@@ -26,7 +26,7 @@ export class ApartmentRepository extends Repository<Apartment> {
     }
 
     findOneById(id: string) {
-        return this.findOne({ where: { id } });
+        return this.findOne({ where: { id }, relations: ['comments', 'comments.user'] });
     }
 
     incrementLikeCount(id: string) {

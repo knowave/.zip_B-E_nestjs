@@ -13,7 +13,7 @@ import { ApartmentImage } from './entities/apartment-image.entity';
 import { Apartment } from './entities/apartment.entity';
 import { RedisService } from '../redis/redis.serivce';
 import { GetApartmentViewTopThreeResponse } from './dto/response/get-apartment-view-top-three.res';
-import { GetApartmentByIdResponse } from './dto/response/get-apartment-by-id.res';
+import { GetApartmentByIdResponse, GetApartmentComment } from './dto/response/get-apartment-by-id.res';
 
 @Injectable()
 export class ApartmentService {
@@ -71,6 +71,15 @@ export class ApartmentService {
             GetApartmentByIdResponse,
             <GetApartmentByIdResponse>{
                 ...apartment,
+                comments: apartment.comments.map((comment) => {
+                    return plainToInstance(GetApartmentComment, <GetApartmentComment>{
+                        id: comment.id,
+                        content: comment.content,
+                        isPrivate: comment.isPrivate,
+                        likeCount: comment.likeCount,
+                        username: comment.user.nickname ?? comment.user.email,
+                    });
+                }),
             },
             {
                 excludeExtraneousValues: true,
