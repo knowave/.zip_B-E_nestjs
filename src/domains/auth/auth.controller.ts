@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateUserBody } from '../user/dto/request/create-user.req';
 import { Public } from 'src/common/decorators/public.decorator';
 import { SigninBody } from './dto/request/signin.req';
@@ -21,6 +21,7 @@ export class AuthController {
 
     @Public()
     @Post('/signup')
+    @ApiBody({ type: CreateUserBody })
     @ApiOperation({ summary: '회원가입' })
     async signup(@Body() createUserBody: CreateUserBody) {
         await this.userService.createUser(createUserBody);
