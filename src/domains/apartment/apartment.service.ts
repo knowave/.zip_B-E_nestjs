@@ -12,7 +12,7 @@ import { ApartmentImageRepository } from './repositories/apartment-image.reposit
 import { ApartmentImage } from './entities/apartment-image.entity';
 import { Apartment } from './entities/apartment.entity';
 import { RedisService } from '../redis/redis.serivce';
-import { GetApartmentViewTopThreeResponse } from './dto/response/get-apartment-view-top-ten.res';
+import { GetApartmentViewTopThreeResponse } from './dto/response/get-apartment-view-top-three.res';
 import { GetApartmentByIdResponse } from './dto/response/get-apartment-by-id.res';
 
 @Injectable()

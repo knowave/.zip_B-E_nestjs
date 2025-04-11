@@ -3,8 +3,9 @@ import { ApartmentService } from './apartment.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetApartmentListQuery } from './dto/request/get-apartment-list.req';
 import { GetApartmentListResponse } from './dto/response/get-apartment-list.res';
-import { GetApartmentViewTopThreeResponse } from './dto/response/get-apartment-view-top-ten.res';
+import { GetApartmentViewTopThreeResponse } from './dto/response/get-apartment-view-top-three.res';
 import { Public } from 'src/common/decorators/public.decorator';
+import { GetApartmentByIdResponse } from './dto/response/get-apartment-by-id.res';
 
 @ApiTags('apartment')
 @Controller('apartment')
@@ -31,5 +32,13 @@ export class ApartmentController {
     @ApiResponse({ type: GetApartmentViewTopThreeResponse })
     async getApartmentViewTopThree() {
         return this.apartmentService.getApartmentViewTopThree();
+    }
+
+    @Public()
+    @Get(':id')
+    @ApiOperation({ summary: '아파트 상세 조회' })
+    @ApiResponse({ type: GetApartmentByIdResponse })
+    async getApartmentById(@Param('id') id: string) {
+        return this.apartmentService.getApartmentById(id);
     }
 }
