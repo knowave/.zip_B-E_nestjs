@@ -57,14 +57,14 @@ export class ApartmentRepository extends Repository<Apartment> {
         return this.save(apartmentList);
     }
 
-    getApartmentViewTopTen() {
+    getApartmentViewTopThree() {
         return this.find({
             select: ['id', 'announcementName', 'viewCount'],
             order: {
                 viewCount: 'DESC',
                 announcementName: 'ASC',
             },
-            take: 10,
+            take: 3,
         });
     }
 }

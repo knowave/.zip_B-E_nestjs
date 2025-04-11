@@ -12,7 +12,7 @@ import { ApartmentImageRepository } from './repositories/apartment-image.reposit
 import { ApartmentImage } from './entities/apartment-image.entity';
 import { Apartment } from './entities/apartment.entity';
 import { RedisService } from '../redis/redis.serivce';
-import { GetApartmentViewTopTenResponse } from './dto/response/get-apartment-view-top-ten.res';
+import { GetApartmentViewTopThreeResponse } from './dto/response/get-apartment-view-top-ten.res';
 import { GetApartmentByIdResponse } from './dto/response/get-apartment-by-id.res';
 
 @Injectable()
@@ -151,15 +151,15 @@ export class ApartmentService {
         await this.apartmentRepository.bulkSave(createApartmentList);
     }
 
-    async getApartmentViewTopTen() {
+    async getApartmentViewTopThree() {
         const ttl = 60 * 60 * 24; // 24시간
 
         const cachedData = await this.redisService.get(this.cacheKey);
 
         if (cachedData) {
             return plainToInstance(
-                GetApartmentViewTopTenResponse,
-                <GetApartmentViewTopTenResponse>{
+                GetApartmentViewTopThreeResponse,
+                <GetApartmentViewTopThreeResponse>{
                     apartmentList: JSON.parse(cachedData),
                 },
                 {
@@ -169,12 +169,12 @@ export class ApartmentService {
             );
         }
 
-        const apartmentList = await this.apartmentRepository.getApartmentViewTopTen();
+        const apartmentList = await this.apartmentRepository.getApartmentViewTopThree();
         await this.redisService.set(this.cacheKey, JSON.stringify(apartmentList), ttl);
 
         return plainToInstance(
-            GetApartmentViewTopTenResponse,
-            <GetApartmentViewTopTenResponse>{
+            GetApartmentViewTopThreeResponse,
+            <GetApartmentViewTopThreeResponse>{
                 apartmentList,
             },
             {
