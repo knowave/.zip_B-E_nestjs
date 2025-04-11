@@ -32,3 +32,4 @@ export const REDIS_HOST = process.env.REDIS_HOST as string;
 export const REDIS_PORT = process.env.REDIS_PORT as string;
 
 export const APT_API_SECRET_KEY = process.env.APT_API_SECRET_KEY as string;
+export const ORIGIN_URL = process.env.ORIGIN_URL as string;
