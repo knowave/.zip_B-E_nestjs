@@ -26,7 +26,7 @@ export class ApartmentController {
     }
 
     @Public()
-    @Get('top-ten')
+    @Get('top-three')
     @ApiOperation({ summary: '조회수 상위 3개 아파트 조회' })
     @ApiResponse({ type: GetApartmentViewTopThreeResponse })
     async getApartmentViewTopThree() {

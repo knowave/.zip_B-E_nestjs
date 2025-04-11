@@ -59,7 +59,7 @@ export class ApartmentRepository extends Repository<Apartment> {
 
     getApartmentViewTopThree() {
         return this.find({
-            select: ['id', 'announcementName', 'viewCount'],
+            select: ['id', 'announcementName', 'viewCount', 'totalHouseholds', 'businessDistrict'],
             order: {
                 viewCount: 'DESC',
                 announcementName: 'ASC',
