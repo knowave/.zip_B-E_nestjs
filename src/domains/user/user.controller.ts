@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UpdateUserBody } from './dto/request/update-user.req';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
@@ -7,6 +7,7 @@ import { CurrentUserType } from 'src/common/types/current-user.type';
 import { ChangePasswordBody } from './dto/request/change-password.req';
 import { CheckEmailRequest } from './dto/request/check-email.req';
 import { Public } from 'src/common/decorators/public.decorator';
+import { CheckPasswordBody } from './dto/request/check-password.req';
 
 @ApiTags('user')
 @Controller('user')
@@ -37,5 +38,13 @@ export class UserController {
     @ApiResponse({ type: Boolean })
     async checkEmail(@Body() body: CheckEmailRequest) {
         return await this.userService.checkEmail(body.email);
+    }
+
+    @Post('/check-password')
+    @ApiBody({ type: CheckPasswordBody })
+    @ApiResponse({ type: Boolean })
+    @ApiOperation({ summary: '비밀번호 확인' })
+    async checkPassword(@Body() body: CheckPasswordBody, @CurrentUser() { id }: CurrentUserType) {
+        return await this.userService.checkPassword({ userId: id, body });
     }
 }

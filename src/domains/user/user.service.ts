@@ -11,6 +11,8 @@ import { User } from './entities/user.entity';
 import { ChangePasswordBody } from './dto/request/change-password.req';
 import { CreateSocialUserRequest } from './dto/request/create-social-user.req';
 import { SocialLoginTypeEnum } from 'src/common/enums/social-login-type.enum';
+import { CheckPasswordReqType } from './types/check-password-req.type';
+import { UNAUTHORIZED_ERROR } from 'src/common/exceptions/error-code/unauthorized.error';
 
 @Injectable()
 export class UserService {
@@ -46,7 +48,7 @@ export class UserService {
             nickname,
             password: hashedPassword,
             region,
-            imageUrl,
+            imageUrl
         });
 
         await this.userRepository.save(user);
@@ -63,7 +65,7 @@ export class UserService {
             if (nickname === user.nickname)
                 throw new BaseException({
                     ...BAD_REQUEST_ERROR.ALREADY_EXIST_NICKNAME,
-                    message: nickname,
+                    message: nickname
                 });
 
             user.nickname = nickname;
@@ -73,7 +75,7 @@ export class UserService {
             if (region === user.region)
                 throw new BaseException({
                     ...BAD_REQUEST_ERROR.ALREADY_EXIST_REGION,
-                    message: region,
+                    message: region
                 });
 
             user.region = region;
@@ -110,7 +112,7 @@ export class UserService {
 
         return plainToInstance(User, user, {
             excludeExtraneousValues: true,
-            enableImplicitConversion: true,
+            enableImplicitConversion: true
         });
     }
 
@@ -149,5 +151,19 @@ export class UserService {
         if (user) throw new BaseException(BAD_REQUEST_ERROR.ALREADY_EXIST_EMAIL);
 
         return true;
+    }
+
+    async checkPassword({ userId, body: { password } }: CheckPasswordReqType) {
+        const user = await this.getUserById(userId);
+
+        await this.verifyPassword(password, user.password);
+
+        return true;
+    }
+
+    private async verifyPassword(plainTextPassword: string, hashedPassword: string) {
+        const isPasswordMatch = await bcrypt.compare(plainTextPassword, hashedPassword);
+
+        if (!isPasswordMatch) throw new BaseException(UNAUTHORIZED_ERROR.COMMON);
     }
 }
