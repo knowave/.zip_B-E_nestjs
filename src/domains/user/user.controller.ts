@@ -8,6 +8,7 @@ import { ChangePasswordBody } from './dto/request/change-password.req';
 import { CheckEmailRequest } from './dto/request/check-email.req';
 import { Public } from 'src/common/decorators/public.decorator';
 import { CheckPasswordBody } from './dto/request/check-password.req';
+import { GetUserEmailResponse } from './dto/response/get-user-email.res';
 
 @ApiTags('user')
 @Controller('user')
@@ -23,13 +24,13 @@ export class UserController {
     @Get('/profile')
     @ApiOperation({ summary: '사용자 프로필 조회' })
     async profileUser(@CurrentUser() { id }: CurrentUserType) {
-        return await this.userService.profileUser(id);
+        return this.userService.profileUser(id);
     }
 
     @Patch('/change-password')
     @ApiOperation({ summary: '사용자 비밀번호 수정' })
     async changePassword(@Body() body: ChangePasswordBody, @CurrentUser() { id }: CurrentUserType) {
-        return await this.userService.changePassword(body, id);
+        return this.userService.changePassword(body, id);
     }
 
     @Post('/check-email')
@@ -37,7 +38,7 @@ export class UserController {
     @ApiOperation({ summary: '이메일 중복확인' })
     @ApiResponse({ type: Boolean })
     async checkEmail(@Body() body: CheckEmailRequest) {
-        return await this.userService.checkEmail(body.email);
+        return this.userService.checkEmail(body.email);
     }
 
     @Post('/check-password')
@@ -45,6 +46,13 @@ export class UserController {
     @ApiResponse({ type: Boolean })
     @ApiOperation({ summary: '비밀번호 확인' })
     async checkPassword(@Body() body: CheckPasswordBody, @CurrentUser() { id }: CurrentUserType) {
-        return await this.userService.checkPassword({ userId: id, body });
+        return this.userService.checkPassword({ userId: id, body });
+    }
+
+    @Get('/email')
+    @ApiResponse({ type: GetUserEmailResponse })
+    @ApiOperation({ summary: '사용자 이메일 조회' })
+    async getUserEmail(@CurrentUser() { id }: CurrentUserType) {
+        return this.userService.getUserEmail(id);
     }
 }

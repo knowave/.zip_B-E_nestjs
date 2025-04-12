@@ -13,6 +13,7 @@ import { CreateSocialUserRequest } from './dto/request/create-social-user.req';
 import { SocialLoginTypeEnum } from 'src/common/enums/social-login-type.enum';
 import { CheckPasswordReqType } from './types/check-password-req.type';
 import { UNAUTHORIZED_ERROR } from 'src/common/exceptions/error-code/unauthorized.error';
+import { GetUserEmailResponse } from './dto/response/get-user-email.res';
 
 @Injectable()
 export class UserService {
@@ -159,6 +160,16 @@ export class UserService {
         await this.verifyPassword(password, user.password);
 
         return true;
+    }
+
+    async getUserEmail(userId: string) {
+        const user = await this.userRepository.findOneUserEmailById(userId);
+
+        if (!user) throw new BaseException(NOT_FOUND_ERROR.USER);
+
+        return plainToInstance(GetUserEmailResponse, <GetUserEmailResponse>{
+            email: user.email
+        });
     }
 
     private async verifyPassword(plainTextPassword: string, hashedPassword: string) {

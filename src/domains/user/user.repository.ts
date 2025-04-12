@@ -37,4 +37,8 @@ export class UserRepository extends Repository<User> {
     findOneSocialUserBySocialIdAndType(socialId: string, socialLoginType: string) {
         return this.findOne({ where: { socialId, socialLoginType } });
     }
+
+    findOneUserEmailById(id: string) {
+        return this.findOne({ where: { id }, select: { email: true } });
+    }
 }
