@@ -10,19 +10,30 @@ export class ApartmentRepository extends Repository<Apartment> {
     }
 
     findManyPagination({ skip, take, supplyAreaName, startDate, endDate }: FindManyPaginationType) {
-        const secondSpell = supplyAreaName.substring(1, 2);
+        const secondSpell = supplyAreaName?.substring(1, 2);
 
         if (secondSpell === '상') supplyAreaName = '경상';
         if (secondSpell === '기') supplyAreaName = '경기';
 
-        return this.createQueryBuilder('apt')
-            .leftJoinAndSelect('apt.images', 'images')
-            .where('apt.supplyAreaName LIKE :supplyAreaName', { supplyAreaName: `${supplyAreaName}%` })
-            .andWhere('apt.postDate BETWEEN :startDate AND :endDate', { startDate, endDate })
-            .orderBy('apt.postDate', 'DESC')
-            .skip(skip)
-            .take(take)
-            .getManyAndCount();
+        const query = this.createQueryBuilder('apt').leftJoinAndSelect('apt.images', 'images');
+
+        if (supplyAreaName) {
+            query.andWhere('apt.businessDistrict LIKE :supplyAreaName', { supplyAreaName: `${supplyAreaName}%` });
+        }
+
+        if (startDate) {
+            query.andWhere('apt.announcementDate >= :startDate', { startDate });
+        }
+
+        if (endDate) {
+            query.andWhere('apt.announcementDate <= :endDate', { endDate });
+        }
+
+        if (startDate && endDate) {
+            query.andWhere('apt.announcementDate BETWEEN :startDate AND :endDate', { startDate, endDate });
+        }
+
+        return query.orderBy('apt.announcementDate', 'DESC').skip(skip).take(take).getManyAndCount();
     }
 
     findOneById(id: string) {
@@ -66,9 +77,9 @@ export class ApartmentRepository extends Repository<Apartment> {
             select: ['id', 'announcementName', 'viewCount', 'totalHouseholds', 'businessDistrict'],
             order: {
                 viewCount: 'DESC',
-                announcementName: 'ASC',
+                announcementName: 'ASC'
             },
-            take: 3,
+            take: 3
         });
     }
 }
