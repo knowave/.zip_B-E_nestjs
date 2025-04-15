@@ -23,7 +23,7 @@ export class ApartmentService {
         private readonly apartmentRepository: ApartmentRepository,
         private readonly apartmentImageRepository: ApartmentImageRepository,
         private readonly httpService: HttpService,
-        private readonly redisService: RedisService,
+        private readonly redisService: RedisService
     ) {}
 
     async getApartmentList({ page, take, supplyAreaName, startDate, endDate }: GetApartmentListQuery) {
@@ -34,7 +34,7 @@ export class ApartmentService {
             take,
             supplyAreaName,
             startDate,
-            endDate,
+            endDate
         });
 
         return plainToInstance(
@@ -43,19 +43,19 @@ export class ApartmentService {
                 apartmentList,
                 currentPage: page,
                 totalPage: Math.ceil(totalCount / take),
-                totalCount,
+                totalCount
             },
             {
                 excludeExtraneousValues: true,
-                enableImplicitConversion: true,
-            },
+                enableImplicitConversion: true
+            }
         );
     }
 
     async uploadImageUrlList({ imageUrlList }: UploadImageUrlListBody) {
-        const createApartmentImageList: ApartmentImage[] = imageUrlList.map((imageUrl) => {
+        const createApartmentImageList: ApartmentImage[] = imageUrlList.map(imageUrl => {
             return this.apartmentImageRepository.create({
-                imageUrl,
+                imageUrl
             });
         });
 
@@ -71,20 +71,22 @@ export class ApartmentService {
             GetApartmentByIdResponse,
             <GetApartmentByIdResponse>{
                 ...apartment,
-                comments: apartment.comments.map((comment) => {
+                comments: apartment.comments.map(comment => {
                     return plainToInstance(GetApartmentComment, <GetApartmentComment>{
                         id: comment.id,
                         content: comment.content,
                         isPrivate: comment.isPrivate,
                         likeCount: comment.likeCount,
                         username: comment.user.nickname ?? comment.user.email,
+                        createdAt: comment.createdAt,
+                        updatedAt: comment.updatedAt
                     });
-                }),
+                })
             },
             {
                 excludeExtraneousValues: true,
-                enableImplicitConversion: true,
-            },
+                enableImplicitConversion: true
+            }
         );
     }
 
@@ -129,13 +131,13 @@ export class ApartmentService {
             const options = {
                 method: 'GET',
                 url,
-                headers: {},
+                headers: {}
             };
 
             const res = await this.httpService.axiosRef(options);
             const data = res.data.data;
 
-            data.forEach((item) => {
+            data.forEach(item => {
                 createApartmentList.push(
                     this.apartmentRepository.create({
                         contractPeriod: item['계약기간'],
@@ -150,8 +152,8 @@ export class ApartmentService {
                         leaseDeposit: item['임대보증금'],
                         housingType: item['주택형'],
                         regionalOffice: item['지역본부'],
-                        totalHouseholds: item['총세대수'],
-                    }),
+                        totalHouseholds: item['총세대수']
+                    })
                 );
             });
         }
@@ -169,12 +171,12 @@ export class ApartmentService {
             return plainToInstance(
                 GetApartmentViewTopThreeResponse,
                 <GetApartmentViewTopThreeResponse>{
-                    apartmentList: JSON.parse(cachedData),
+                    apartmentList: JSON.parse(cachedData)
                 },
                 {
                     excludeExtraneousValues: true,
-                    enableImplicitConversion: true,
-                },
+                    enableImplicitConversion: true
+                }
             );
         }
 
@@ -184,12 +186,12 @@ export class ApartmentService {
         return plainToInstance(
             GetApartmentViewTopThreeResponse,
             <GetApartmentViewTopThreeResponse>{
-                apartmentList,
+                apartmentList
             },
             {
                 excludeExtraneousValues: true,
-                enableImplicitConversion: true,
-            },
+                enableImplicitConversion: true
+            }
         );
     }
 }

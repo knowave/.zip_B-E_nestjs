@@ -22,6 +22,14 @@ export class GetApartmentComment {
     @Expose()
     @ApiProperty()
     username: string;
+
+    @Expose()
+    @ApiProperty()
+    createdAt: Date;
+
+    @Expose()
+    @ApiProperty()
+    updatedAt: Date;
 }
 
 export class GetApartmentByIdResponse extends OmitType(Apartment, ['comments']) {
