@@ -1,4 +1,19 @@
-import { PickType } from '@nestjs/swagger';
-import { CreateUserBody } from './create-user.req';
+import { IsOptional, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateUserBody extends PickType(CreateUserBody, ['nickname', 'region', 'imageUrl']) {}
+export class UpdateUserBody {
+    @IsString()
+    @IsOptional()
+    @ApiProperty({ required: false })
+    nickname?: string;
+
+    @IsString()
+    @IsOptional()
+    @ApiProperty({ required: false })
+    region?: string;
+
+    @IsString()
+    @IsOptional()
+    @ApiProperty({ required: false })
+    imageUrl?: string;
+}

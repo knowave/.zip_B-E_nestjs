@@ -66,7 +66,7 @@ export class UserService {
             if (nickname === user.nickname)
                 throw new BaseException({
                     ...BAD_REQUEST_ERROR.ALREADY_EXIST_NICKNAME,
-                    message: nickname
+                    data: nickname
                 });
 
             user.nickname = nickname;
@@ -76,7 +76,7 @@ export class UserService {
             if (region === user.region)
                 throw new BaseException({
                     ...BAD_REQUEST_ERROR.ALREADY_EXIST_REGION,
-                    message: region
+                    data: region
                 });
 
             user.region = region;
