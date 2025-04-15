@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { S3Service } from '../s3/s3.service';
 import { S3_BUCKET_NAME } from 'src/common/env';
+import { plainToInstance } from 'class-transformer';
+import { UploadFileResponse } from './dto/response/upload-file.res';
 
 @Injectable()
 export class UploadService {
@@ -14,7 +16,9 @@ export class UploadService {
             await this.s3Service.uploadObject(key, file.buffer, file.mimetype);
             const url = `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${key}`;
 
-            return url;
+            return plainToInstance(UploadFileResponse, <UploadFileResponse>{
+                url
+            });
         } catch (err) {
             throw new Error(`Failed to upload file: ${err}`);
         }
