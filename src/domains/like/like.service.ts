@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { LikeRepository } from './like.repository';
-import { CommentLikeRequest } from './dto/request/comment-like.req';
 import { CommentService } from '../comment/comment.service';
-import { ApartmentLikeParam } from './dto/request/apartment-like.req';
 import { ApartmentService } from '../apartment/apartment.service';
 import { GetPublicApartmentOrCommentLikeListByUserQuery } from './dto/request/get-apartment-or-comment-like-list-by-user.req';
 import { plainToInstance } from 'class-transformer';
@@ -13,10 +11,10 @@ export class LikeService {
     constructor(
         private readonly likeRepository: LikeRepository,
         private readonly commentService: CommentService,
-        private readonly apartmentService: ApartmentService,
+        private readonly apartmentService: ApartmentService
     ) {}
 
-    async commentLike({ commentId }: CommentLikeRequest, userId: string) {
+    async commentLike(commentId: string, userId: string) {
         const commentLike = await this.likeRepository.findOneByUserIdAndCommentId(userId, commentId);
         const comment = await this.commentService.getCommentById(commentId);
 
@@ -28,15 +26,15 @@ export class LikeService {
             await this.likeRepository.save(
                 this.likeRepository.create({
                     user: { id: userId },
-                    comment: { id: comment.id },
-                }),
+                    comment: { id: comment.id }
+                })
             );
             await this.commentService.incrementCommentByLikeCount(comment.id);
             return true;
         }
     }
 
-    async publicApartmentLike({ apartmentId }: ApartmentLikeParam, userId: string) {
+    async publicApartmentLike(apartmentId: string, userId: string) {
         const apartmentLike = await this.likeRepository.findOneByUserIdAndApartmentId(userId, apartmentId);
         const apartment = await this.apartmentService.getApartmentById(apartmentId);
 
@@ -48,8 +46,8 @@ export class LikeService {
             await this.likeRepository.save(
                 this.likeRepository.create({
                     user: { id: userId },
-                    apartment: { id: apartment.id },
-                }),
+                    apartment: { id: apartment.id }
+                })
             );
             await this.apartmentService.incrementLikeCount(apartment.id);
             return true;
@@ -58,7 +56,7 @@ export class LikeService {
 
     async getPublicApartmentOrCommentLikeListByUser(
         { filter, page, take }: GetPublicApartmentOrCommentLikeListByUserQuery,
-        userId: string,
+        userId: string
     ) {
         const skip = (page - 1) * take;
         const [publicApartmentLikeList, totalCount] =
@@ -66,7 +64,7 @@ export class LikeService {
                 filter,
                 userId,
                 skip,
-                take,
+                take
             });
 
         return plainToInstance(
@@ -75,12 +73,12 @@ export class LikeService {
                 publicApartmentLikeList,
                 currentPage: page,
                 totalPage: Math.ceil(totalCount / take),
-                totalCount,
+                totalCount
             },
             {
                 excludeExtraneousValues: true,
-                enableImplicitConversion: true,
-            },
+                enableImplicitConversion: true
+            }
         );
     }
 }
