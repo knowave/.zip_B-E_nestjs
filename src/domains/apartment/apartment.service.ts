@@ -11,7 +11,7 @@ import { ApartmentRepository } from './repositories/apartment.repository';
 import { ApartmentImageRepository } from './repositories/apartment-image.repository';
 import { ApartmentImage } from './entities/apartment-image.entity';
 import { Apartment } from './entities/apartment.entity';
-import { RedisService } from '../redis/redis.serivce';
+import { RedisService } from '../redis/redis.service';
 import { GetApartmentViewTopThreeResponse } from './dto/response/get-apartment-view-top-three.res';
 import { GetApartmentByIdResponse, GetApartmentComment } from './dto/response/get-apartment-by-id.res';
 

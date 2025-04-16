@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { RedisService } from '../redis/redis.serivce';
+import { RedisService } from '../redis/redis.service';
 import { Cron } from '@nestjs/schedule';
 import { CronRepository } from './cron.repository';
 import { QueueService } from '../queue/queue.service';
@@ -13,7 +13,7 @@ export class CronService {
     constructor(
         private readonly redisService: RedisService,
         private readonly cronRepository: CronRepository,
-        private readonly queueService: QueueService,
+        private readonly queueService: QueueService
     ) {}
 
     @Cron('0 6 * * *', { name: 'apartment-supply-job', timeZone: 'Asia/Seoul' })
@@ -25,7 +25,7 @@ export class CronService {
             this.cronRepository.createCronLog({
                 name: this.lockKey,
                 status: false,
-                time: 0,
+                time: 0
             });
             return;
         }
@@ -37,7 +37,7 @@ export class CronService {
             this.cronRepository.createCronLog({
                 name: this.lockKey,
                 status: true,
-                time: endTime - startTime,
+                time: endTime - startTime
             });
         } catch (error) {
             this.logger.error(error);
