@@ -14,6 +14,8 @@ import { Apartment } from './entities/apartment.entity';
 import { RedisService } from '../redis/redis.service';
 import { GetApartmentViewTopThreeResponse } from './dto/response/get-apartment-view-top-three.res';
 import { GetApartmentByIdResponse, GetApartmentComment } from './dto/response/get-apartment-by-id.res';
+import { GetApartmentPopularSearchKeywordResponse } from './dto/response/get-apartment-popular-search-keyword.res';
+import { InsertApartmentKeywordBody } from './dto/request/insert-apartment-keyword.req';
 
 @Injectable()
 export class ApartmentService {
@@ -193,5 +195,39 @@ export class ApartmentService {
                 enableImplicitConversion: true
             }
         );
+    }
+
+    async insertApartmentKeyword({ keyword }: InsertApartmentKeywordBody) {
+        if (!keyword?.trim()) return;
+        await this.redisService.zincrby(keyword);
+    }
+
+    async getApartmentPopularSearchKeyword() {
+        const result = await this.redisService.zrevrange();
+
+        if (!result.length) return [];
+
+        const keywordScorePairs: GetApartmentPopularSearchKeywordResponse[] = [];
+
+        for (let i = 0; i < result.length; i += 2) {
+            keywordScorePairs.push({
+                keyword: result[i],
+                score: Number(result[i + 1])
+            });
+        }
+
+        return keywordScorePairs.map(({ keyword, score }) => {
+            return plainToInstance(
+                GetApartmentPopularSearchKeywordResponse,
+                <GetApartmentPopularSearchKeywordResponse>{
+                    keyword,
+                    score
+                },
+                {
+                    excludeExtraneousValues: true,
+                    enableImplicitConversion: true
+                }
+            );
+        });
     }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApartmentService } from './apartment.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetApartmentListQuery } from './dto/request/get-apartment-list.req';
@@ -6,6 +6,8 @@ import { GetApartmentListResponse } from './dto/response/get-apartment-list.res'
 import { GetApartmentViewTopThreeResponse } from './dto/response/get-apartment-view-top-three.res';
 import { Public } from 'src/common/decorators/public.decorator';
 import { GetApartmentByIdResponse } from './dto/response/get-apartment-by-id.res';
+import { GetApartmentPopularSearchKeywordResponse } from './dto/response/get-apartment-popular-search-keyword.res';
+import { InsertApartmentKeywordBody } from './dto/request/insert-apartment-keyword.req';
 
 @ApiTags('apartment')
 @Controller('apartment')
@@ -35,10 +37,25 @@ export class ApartmentController {
     }
 
     @Public()
+    @Get('popular-search-keyword')
+    @ApiResponse({ type: [GetApartmentPopularSearchKeywordResponse] })
+    @ApiOperation({ summary: '아파트 인기 검색어 조회' })
+    async getApartmentPopularSearchKeyword() {
+        return this.apartmentService.getApartmentPopularSearchKeyword();
+    }
+
+    @Public()
     @Get(':id')
     @ApiOperation({ summary: '아파트 상세 조회' })
     @ApiResponse({ type: GetApartmentByIdResponse })
     async getApartmentById(@Param('id') id: string) {
         return this.apartmentService.getApartmentById(id);
+    }
+
+    @Public()
+    @Post('popular-search-keyword')
+    @ApiOperation({ summary: '아파트 인기 검색어 저장' })
+    async insertApartmentKeyword(@Body() body: InsertApartmentKeywordBody) {
+        return this.apartmentService.insertApartmentKeyword(body);
     }
 }
