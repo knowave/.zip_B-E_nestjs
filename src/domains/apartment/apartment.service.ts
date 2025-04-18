@@ -216,18 +216,21 @@ export class ApartmentService {
             });
         }
 
-        return keywordScorePairs.map(({ keyword, score }) => {
-            return plainToInstance(
-                GetApartmentPopularSearchKeywordResponse,
-                <GetApartmentPopularSearchKeywordResponse>{
-                    keyword,
-                    score
-                },
-                {
-                    excludeExtraneousValues: true,
-                    enableImplicitConversion: true
-                }
-            );
-        });
+        return keywordScorePairs
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 10)
+            .map(({ keyword, score }) => {
+                return plainToInstance(
+                    GetApartmentPopularSearchKeywordResponse,
+                    <GetApartmentPopularSearchKeywordResponse>{
+                        keyword,
+                        score
+                    },
+                    {
+                        excludeExtraneousValues: true,
+                        enableImplicitConversion: true
+                    }
+                );
+            });
     }
 }
