@@ -2,12 +2,13 @@ name: Deploy to AWS ECR + Lambda
 
 on:
     push:
-        # branches:
-        #     - main
+        branches:
+            - main
 
 env:
     AWS_REGION: ap-northeast-2
     ECR_REPOSITORY: dotzip
+    AWS_LAMBDA_FUNCTION_NAME: dotzip-backend-lambda
 
 jobs:
     build:
@@ -68,5 +69,13 @@ jobs:
                   IMAGE_TAG: ${{ github.sha }}
               run: |
                   echo "🔍 Building Docker image..."
-            #       docker build -t $ECR_REGISTRY:$ECR_REPOSITORY:$IMAGE_TAG .
-            #       docker push $ECR_REGISTRY:$ECR_REPOSITORY:$IMAGE_TAG
+                  docker build -t $ECR_REGISTRY:$ECR_REPOSITORY:$IMAGE_TAG .
+                  docker push $ECR_REGISTRY:$ECR_REPOSITORY:$IMAGE_TAG
+
+            # - name: Deploy Lambda Function
+            #   run: |
+            #       echo "🔍 Deploying Lambda function..."
+            #       aws lambda update-function-code \
+            #         --function-name $AWS_LAMBDA_FUNCTION_NAME \
+            #         --image-uri ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+            #         --region $AWS_REGION
