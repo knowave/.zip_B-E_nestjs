@@ -1,15 +1,14 @@
-FROM node:20-alpine
+FROM node:20-alpine as builder
 
 WORKDIR /app
 
-# COPY package*.json ./
 COPY . .
 
 RUN yarn install
 
 RUN yarn build
 
-FROM public.ecr.aws/lambda/nodejs:20
+FROM public.ecr.aws/lambda/nodejs20.x
 
 WORKDIR ${LAMBDA_TASK_ROOT}
 
@@ -17,5 +16,4 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
 
-# CMD ["yarn", "start:prod"]
-CMD ["node", "dist/main.js"]
+CMD ["dist/lambda.handler"]

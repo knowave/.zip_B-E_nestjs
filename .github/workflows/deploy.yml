@@ -69,7 +69,7 @@ jobs:
                   IMAGE_TAG: ${{ github.sha }}
               run: |
                   echo "🔍 Building Docker image..."
-                  docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile .
+                  docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
                   docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
             # - name: Deploy Lambda Function
