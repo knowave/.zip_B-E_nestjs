@@ -1,7 +1,6 @@
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './domains/app.module';
-import { NODE_ENV, ORIGIN_URL, PORT } from './common/env';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { NODE_ENV } from './common/env';
 import { setupSwagger } from './common/config/swagger.config';
 import { Handler } from 'aws-lambda';
 import serverlessExpress from '@codegenie/serverless-express';
