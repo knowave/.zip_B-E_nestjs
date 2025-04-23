@@ -9,8 +9,8 @@ import { GetApartmentByIdResponse } from './dto/response/get-apartment-by-id.res
 import { GetApartmentPopularSearchKeywordResponse } from './dto/response/get-apartment-popular-search-keyword.res';
 import { InsertApartmentKeywordBody } from './dto/request/insert-apartment-keyword.req';
 
-@ApiTags('apartments')
-@Controller('apartments')
+@ApiTags('apartment')
+@Controller('apartment')
 export class ApartmentController {
     constructor(private readonly apartmentService: ApartmentService) {}
 
