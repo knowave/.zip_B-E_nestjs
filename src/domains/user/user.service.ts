@@ -4,7 +4,7 @@ import { BaseException } from 'src/common/exceptions/error';
 import { NOT_FOUND_ERROR } from 'src/common/exceptions/error-code/not-found.error';
 import { CreateUserBody } from './dto/request/create-user.req';
 import { BAD_REQUEST_ERROR } from 'src/common/exceptions/error-code/bad-request.error';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { UpdateUserBody } from './dto/request/update-user.req';
 import { plainToInstance } from 'class-transformer';
 import { User } from './entities/user.entity';

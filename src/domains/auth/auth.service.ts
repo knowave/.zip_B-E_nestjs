@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { BaseException } from 'src/common/exceptions/error';
 import { NOT_FOUND_ERROR } from 'src/common/exceptions/error-code/not-found.error';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { UNAUTHORIZED_ERROR } from 'src/common/exceptions/error-code/unauthorized.error';
 import { SigninBody } from './dto/request/signin.req';
 import { User } from '../user/entities/user.entity';
