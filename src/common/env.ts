@@ -16,9 +16,9 @@ export const JWT_REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH_TOKEN_SECRET as 
 export const JWT_REFRESH_TOKEN_EXPIRATION_TIME = process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME as string;
 
 export const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME as string;
-export const AWS_REGION = process.env.AWS_REGION as string;
-export const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID as string;
-export const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY as string;
+export const REGION = process.env.REGION as string;
+export const AWS_ACCESS = process.env.AWS_ACCESS as string;
+export const AWS_SECRET = process.env.AWS_SECRET as string;
 
 export const KAKAO_CALLBACK_URL = process.env.KAKAO_CALLBACK_URL as string;
 export const KAKAO_CLIENT_ID = process.env.KAKAO_CLIENT_ID as string;

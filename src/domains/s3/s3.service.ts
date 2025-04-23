@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
-import { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET_NAME, AWS_REGION } from 'src/common/env';
+import { AWS_ACCESS, AWS_SECRET, S3_BUCKET_NAME, REGION } from 'src/common/env';
 
 @Injectable()
 export class S3Service {
@@ -11,10 +11,10 @@ export class S3Service {
         this.defaultBucket = S3_BUCKET_NAME;
         this.s3 = new S3({
             credentials: {
-                accessKeyId: AWS_ACCESS_KEY_ID,
-                secretAccessKey: AWS_SECRET_ACCESS_KEY,
+                accessKeyId: AWS_ACCESS,
+                secretAccessKey: AWS_SECRET
             },
-            region: AWS_REGION,
+            region: REGION
         });
     }
 
@@ -22,7 +22,7 @@ export class S3Service {
         return await this.s3
             .getObject({
                 Bucket: bucket || this.defaultBucket,
-                Key: key,
+                Key: key
             })
             .promise();
     }
@@ -31,7 +31,7 @@ export class S3Service {
         return await this.s3
             .deleteObject({
                 Bucket: bucket || this.defaultBucket,
-                Key: key,
+                Key: key
             })
             .promise();
     }
@@ -40,14 +40,14 @@ export class S3Service {
         key: string,
         body: S3.Body,
         contentType?: string,
-        bucket?: string,
+        bucket?: string
     ): Promise<S3.ManagedUpload.SendData> {
         return await this.s3
             .upload({
                 Key: key,
                 Body: body,
                 ContentType: contentType,
-                Bucket: bucket || this.defaultBucket,
+                Bucket: bucket || this.defaultBucket
             })
             .promise();
     }
