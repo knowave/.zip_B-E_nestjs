@@ -14,6 +14,7 @@ async function bootstrap(): Promise<Handler> {
         const stagePrefix = '/dev';
         if (req.url.startsWith(stagePrefix)) {
             req.url = req.url.slice(stagePrefix.length) || '/';
+            req.originalUrl = req.url;
         }
         next();
     });
