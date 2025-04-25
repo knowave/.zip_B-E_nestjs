@@ -58,4 +58,10 @@ export class ApartmentController {
     async insertApartmentKeyword(@Body() body: InsertApartmentKeywordBody) {
         return this.apartmentService.insertApartmentKeyword(body);
     }
+
+    @Public()
+    @Post('create-apartment-list')
+    async createApartmentList() {
+        return this.apartmentService.createApartmentList();
+    }
 }

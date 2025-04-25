@@ -12,7 +12,7 @@ async function bootstrap() {
 
     app.enableCors({
         origin: ORIGIN_URL,
-        credentials: true,
+        credentials: true
     });
 
     if (NODE_ENV !== 'prod') setupSwagger(app);
